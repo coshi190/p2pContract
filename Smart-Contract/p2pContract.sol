@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "./KAPsupport.sol";
 
-contract p2pContract003 {
+contract p2pContract004 {
 
     address projectAdmin;
     modifier onlyProjectAdmin() {
@@ -129,14 +129,7 @@ contract p2pContract003 {
         if(isActivatedOnlyKycAddress) {
             require(kyc.kycsLevel(_sender) >= acceptedKycLevel && kyc.kycsLevel(_receiver) >= acceptedKycLevel, "KYC"); // for KYC address only
         }
-
-        if(_nftIndex == 0) {
-            require(_offerAmount <= tokens[_offerIndex].balanceOf(_sender), "IO"); // OT : Insufficient Offer token
-
-        } else if(_nftIndex != 0) {
-            require(nfts[_nftIndex].ownerOf(_nftId) == _sender, "NO"); // NFT : your are Not Owner of this nft id
-        }
-
+        
         dealCount++; // save deal data to storage
         deals[dealCount].callIndex = _callIndex;
         deals[dealCount].sender = _sender;
@@ -194,9 +187,8 @@ contract p2pContract003 {
         require(msg.sender == programCall[deals[_index].callIndex], "NP"); // NP : Not Permission to call
         require(deals[_index].receiver == _sendFrom, "NP"); // NP : Not Permission to call
         require(deals[_index].status == false, "NA"); // DR : deal is Not Active
-        require(deals[_index].getAmount <= tokens[deals[_index].getIndex].balanceOf(deals[_index].receiver), "IG"); // OT : Insufficient Get token
         
-        deals[_index].status == true; // finalize deal
+        deals[_index].status = true; // finalize deal
         
         tokens[deals[_index].getIndex].transferFrom(deals[_index].receiver, deals[_index].sender, deals[_index].getAmount);
 
