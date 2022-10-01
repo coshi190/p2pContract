@@ -3,55 +3,73 @@ pragma solidity >=0.8.0;
 
 import "./KAPsupport.sol";
 
-contract p2pContract004 {
+contract p2pContract005 {
 
     address projectAdmin;
     modifier onlyProjectAdmin() {
         require(msg.sender == projectAdmin, "NP"); // NP : Not Permission to call
         _;
     }
-    mapping(uint256=>address) programCall; // for variety of platform fee collection
 
-    mapping(uint256=>KAP20) public tokens;
-    mapping(uint256=>KAP721) public nfts;
+    // for variety of platform fee program
+    mapping(uint256=>address) programCall; 
+
+    mapping(uint256=>KAP20) tokens;
+    mapping(uint256=>KAP721) nfts;
     uint256 tokenCount;
     uint256 nftCount;
 
     // for bitkub chain policy : kyc address
-    IKYCBitkubChain public kyc;
+    IKYCBitkubChain kyc;
     uint256 acceptedKycLevel;
     bool isActivatedOnlyKycAddress;
     
-    event theDeal(
-        uint256 indexed _dealIndex,
-        address indexed _sender,
-        address indexed _receiver,
-        uint256 _offerIndex,
-        uint256 _offerAmount,
-        uint256 _nftIndex,
-        uint256 _nftId,
-        uint256 _getIndex,
-        uint256 _getAmount,
-        uint256 _offerTime,
-        uint256 _completeTime,
-        uint256 _callIndex,
-        bool _status
-        );
     struct Deal {
         uint256 callIndex;
         address sender;
         address receiver;
-        uint256 offerIndex;
-        uint256 offerAmount;
-        uint256 nftIndex;
-        uint256 nftId;
-        uint256 getIndex;
-        uint256 getAmount;
+        uint256 offerTokenIndex;
+        uint256 offerTokenAmount;
+        uint256 offerNftIndex;
+        uint256 offerNftId;
+        uint256 getTokenIndex;
+        uint256 getTokenAmount;
+        uint256 getNftIndex;
+        uint256 getNftId;
         uint256 offerTime;
         bool status;
     }
     mapping(uint256=>Deal) deals;
     uint256 dealCount;
+    mapping(address=>uint256[]) dealsbySender;
+    mapping(address=>uint256[]) dealsbyReceiver;
+    uint256[] activeDeals;
+    uint256[] completeDeals;
+
+    event OfferDeal(
+        address indexed _sender,
+        address indexed _receiver,
+        uint256 indexed _callIndex,
+        uint256 _dealIndex
+    );
+    event RejectDeal(
+        address indexed _sender,
+        address indexed _receiver,
+        uint256 indexed _callIndex,
+        uint256 _dealIndex
+    );
+    event BkcAdminUnlock(
+        address indexed _sender,
+        address indexed _receiver,
+        uint256 indexed _callIndex,
+        uint256 _dealIndex
+    );
+    event ConfirmDeal(
+        address indexed _sender,
+        address indexed _receiver,
+        uint256 indexed _callIndex,
+        uint256 _dealIndex
+    );
 
     constructor() {
         projectAdmin = msg.sender;
@@ -117,39 +135,55 @@ contract p2pContract004 {
         uint256 _callIndex,
         address _sender,
         address _receiver,
-        uint256 _offerIndex,
-        uint256 _offerAmount,
-        uint256 _nftIndex, 
-        uint256 _nftId,
-        uint256 _getIndex,
-        uint256 _getAmount
+        uint256 _offerTokenIndex,
+        uint256 _offerTokenAmount,
+        uint256 _offerNftIndex,
+        uint256 _offerNftId,
+        uint256 _getTokenIndex,
+        uint256 _getTokenAmount,
+        uint256 _getNftIndex,
+        uint256 _getNftId
     ) external {
         require(msg.sender == programCall[_callIndex], "NP"); // NP : Not Permission to call
 
         if(isActivatedOnlyKycAddress) {
-            require(kyc.kycsLevel(_sender) >= acceptedKycLevel && kyc.kycsLevel(_receiver) >= acceptedKycLevel, "KYC"); // for KYC address only
+            require(
+                kyc.kycsLevel(_sender) >= acceptedKycLevel && kyc.kycsLevel(_receiver) >= acceptedKycLevel, "KYC"
+            ); // for KYC address only
         }
         
-        dealCount++; // save deal data to storage
+        dealCount++;
         deals[dealCount].callIndex = _callIndex;
         deals[dealCount].sender = _sender;
         deals[dealCount].receiver = _receiver;
-        deals[dealCount].offerIndex = _offerIndex;
-        deals[dealCount].offerAmount = _offerAmount;
-        deals[dealCount].nftIndex = _nftIndex;
-        deals[dealCount].nftId = _nftId;
-        deals[dealCount].getIndex = _getIndex;
-        deals[dealCount].getAmount = _getAmount;
-        deals[dealCount].offerTime = block.timestamp;
 
-        if(_nftIndex == 0) {
-            tokens[_offerIndex].transferFrom(_sender, address(this), _offerAmount);
+        if (_offerTokenIndex != 0) {
+            deals[dealCount].offerTokenIndex = _offerTokenIndex;
+            deals[dealCount].offerTokenAmount = _offerTokenAmount;
 
-        } else if(_nftIndex != 0) {
-            nfts[_nftIndex].transferFrom(_sender, address(this), _nftId);
+            tokens[_offerTokenIndex].transferFrom(_sender, address(this), _offerTokenAmount);
+
+        } else if (_offerNftIndex != 0) {
+            deals[dealCount].offerNftIndex = _offerNftIndex;
+            deals[dealCount].offerNftId = _offerNftId;
+
+            nfts[_offerNftIndex].transferFrom(_sender, address(this), _offerNftId);
         }
 
-        emit theDeal(dealCount, deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].offerIndex, deals[dealCount].offerAmount, deals[dealCount].nftIndex, deals[dealCount].nftId, deals[dealCount].getIndex, deals[dealCount].getAmount, deals[dealCount].offerTime, 0, deals[dealCount].callIndex, false);
+        if (_getTokenIndex != 0) {
+            deals[dealCount].getTokenIndex = _getTokenIndex;
+            deals[dealCount].getTokenAmount = _getTokenAmount;
+        } else if (_getNftIndex != 0) {
+            deals[dealCount].getNftIndex = _getNftIndex;
+            deals[dealCount].getNftId = _getNftId;
+        }
+        deals[dealCount].offerTime = block.timestamp;
+
+        dealsbySender[_sender].push(dealCount);
+        dealsbyReceiver[_receiver].push(dealCount);
+        activeDeals.push(dealCount);
+
+        emit OfferDeal(deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].callIndex, dealCount);
     }
 
     function rejectDeal(
@@ -157,27 +191,56 @@ contract p2pContract004 {
         address _sendFrom
         ) external {
         require(msg.sender == programCall[deals[_index].callIndex], "NP"); // NP : Not Permission to call
-        require(deals[_index].status == false, "NA"); // DR : deal is Not Active
-        require(deals[_index].sender == _sendFrom || (deals[_index].receiver == _sendFrom && block.timestamp >= deals[_index].offerTime + 1 weeks), "NP"); // NP : Not Permission to call
+        require(deals[_index].status == false, "DC"); // DC : Deal Complete
+        require(
+            deals[_index].sender == _sendFrom || (deals[_index].receiver == _sendFrom && block.timestamp > deals[_index].offerTime + 1 weeks), "NP"
+        );
 
-        address sender = deals[_index].sender; // copy var to safely send back lock token/nft
+        delete deals[_index].status;
 
-        if (deals[_index].nftIndex == 0) {
-            uint256 offerIndex = deals[_index].offerIndex;
-            uint256 offerAmount = deals[_index].offerAmount;
-            delete deals[_index];
-            
-            tokens[offerIndex].transfer(sender, offerAmount);
+        if (deals[_index].offerTokenIndex != 0) {
+            tokens[deals[_index].offerTokenIndex].transfer(deals[_index].sender, deals[_index].offerTokenAmount);
 
-        } else if (deals[_index].nftIndex != 0) {
-            uint256 nftIndex = deals[_index].nftIndex;
-            uint256 nftId = deals[_index].nftId;
-            delete deals[_index];
-
-            nfts[nftIndex].transferFrom(address(this), sender, nftId);
+        } else if (deals[_index].offerNftIndex != 0) {
+            nfts[deals[_index].offerNftIndex].transferFrom(address(this), deals[_index].sender, deals[_index].offerNftId);
         }
 
-        emit theDeal(_index, _sendFrom, sender, 0, 0, 0, 0, 0, 0, 0, block.timestamp, 0, false);
+        emit RejectDeal(deals[_index].sender, deals[_index].receiver, deals[_index].callIndex, _index);
+
+        for (uint256 i; i <= activeDeals.length - 1; i++) {
+            if (activeDeals[i] == _index) {
+                delete activeDeals[i];
+            }
+        }
+
+        delete deals[_index];
+    }
+
+    // for bitkub chain policy : bkc admin can transfer/unlock token/nft out of p2pContract
+    function bkcAdminUnlockDeal(
+        uint256 _index,
+        address _to
+        ) external {
+        require(deals[_index].status == false, "DC"); // DC : Deal Complete
+
+        delete deals[_index].status;
+
+        if (deals[_index].offerTokenIndex != 0) {
+            tokens[deals[_index].offerTokenIndex].adminTransfer(address(this), _to, deals[_index].offerTokenAmount);
+
+        } else if (deals[_index].offerNftIndex != 0) {
+            nfts[deals[_index].offerNftIndex].adminTransfer(address(this), _to, deals[_index].offerNftId);
+        }
+
+        emit BkcAdminUnlock(deals[_index].sender, deals[_index].receiver, deals[_index].callIndex, _index);
+
+        for (uint256 i; i <= activeDeals.length - 1; i++) {
+            if (activeDeals[i] == _index) {
+                delete activeDeals[i];
+            }
+        }
+
+        delete deals[_index];
     }
 
     function confirmDeal(
@@ -185,47 +248,52 @@ contract p2pContract004 {
         address _sendFrom
         ) external {
         require(msg.sender == programCall[deals[_index].callIndex], "NP"); // NP : Not Permission to call
-        require(deals[_index].receiver == _sendFrom, "NP"); // NP : Not Permission to call
-        require(deals[_index].status == false, "NA"); // DR : deal is Not Active
+        require(deals[_index].receiver == _sendFrom, "NP");
+        require(deals[_index].status == false, "DC"); // DC : Deal Complete
         
-        deals[_index].status = true; // finalize deal
+        deals[_index].status = true;
         
-        tokens[deals[_index].getIndex].transferFrom(deals[_index].receiver, deals[_index].sender, deals[_index].getAmount);
+        if (deals[_index].getTokenIndex != 0) {
+            tokens[deals[_index].getTokenIndex].transferFrom(deals[_index].receiver, deals[_index].sender, deals[_index].getTokenAmount);
 
-        if(deals[_index].nftIndex == 0) {
-            tokens[deals[_index].offerIndex].transfer(deals[_index].receiver, deals[_index].offerAmount);
-
-        } else if(deals[_index].nftIndex != 0) {
-            nfts[deals[_index].nftIndex].transferFrom(address(this), deals[_index].receiver, deals[_index].nftId);
+        } else if (deals[_index].getNftIndex != 0) {
+            nfts[deals[_index].getNftIndex].transferFrom(address(this), deals[_index].receiver, deals[_index].getNftId);
         }
 
-        emit theDeal(_index, deals[_index].sender, deals[_index].receiver, deals[_index].offerIndex, deals[_index].offerAmount, deals[_index].nftIndex, deals[_index].nftId, deals[_index].getIndex, deals[_index].getAmount, deals[_index].offerTime, block.timestamp, deals[dealCount].callIndex, true);
-    }
+        if (deals[_index].offerTokenIndex != 0) {
+            tokens[deals[_index].offerTokenIndex].transfer(deals[_index].receiver, deals[_index].offerTokenAmount);
 
-    // for bitkub chain policy : bkc admin can transfer/unlock token/nft out of p2pContract
-    function bkcAdminUnlock(
-        address _to, 
-        uint256 _dealIndex
-        ) external {
-        require(deals[_dealIndex].status == false, "NA"); // DR : deal is Not Active
-
-        if (deals[_dealIndex].nftIndex == 0) {
-            tokens[deals[_dealIndex].offerIndex].adminTransfer(address(this), _to, deals[_dealIndex].offerAmount);
-
-        } else if (deals[_dealIndex].nftIndex != 0) {
-            nfts[deals[_dealIndex].nftIndex].adminTransfer(address(this), _to, deals[_dealIndex].nftId);
+        } else if (deals[_index].offerNftIndex != 0) {
+            nfts[deals[_index].offerNftIndex].transferFrom(address(this), deals[_index].receiver, deals[_index].offerNftId);
         }
 
-        delete deals[_dealIndex];
+        for (uint256 i; i <= activeDeals.length - 1; i++) {
+            if (activeDeals[i] == _index) {
+                delete activeDeals[i];
+            }
+        }
+        completeDeals.push(dealCount);
 
-        emit theDeal(_dealIndex, msg.sender, _to, 0, 0, 0, 0, 0, 0, 0, block.timestamp, 0, false);
+        emit ConfirmDeal(deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].callIndex, _index);
     }
 
-    function getDeal(uint256 _dealIndex) external view returns(Deal memory) {
-        return deals[_dealIndex];
+    function getDeal(uint256 _index) external view returns(Deal memory) {
+        return deals[_index];
     }
     function getDealCount() external view returns(uint256) {
         return dealCount;
+    }
+    function getDealsbySender(address _addr) external view returns(uint256[] memory) {
+        return dealsbySender[_addr];
+    }
+    function getDealsbyReceiver(address _addr) external view returns(uint256[] memory) {
+        return dealsbyReceiver[_addr];
+    }
+    function getActiveDeals() external view returns(uint256[] memory) {
+        return activeDeals;
+    }
+    function getCompleteDeals() external view returns(uint256[] memory) {
+        return completeDeals;
     }
    
 }
