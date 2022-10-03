@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: UNLICENSED
-// Sources flattened with hardhat v2.5.0 https://hardhat.org
-
 
 // File contracts/shared/interfaces/IAdminProjectRouter.sol
 
