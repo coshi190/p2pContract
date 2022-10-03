@@ -56,14 +56,12 @@ contract p2pContract006 {
         projectAdmin = msg.sender;
     }
 
-    // for variety of platform fee program
     function setProjectAdmin(address _addr) external onlyProjectAdmin {
         projectAdmin = _addr;
     }
     function getProjectAdmin() external view returns(address) {
         return projectAdmin;
     }
-
     function setCommittee(address _committee) external onlyCommittee {
         committee = _committee;
     }
@@ -71,6 +69,7 @@ contract p2pContract006 {
         return committee;
     }
 
+    // for variety of platform fee program
     function setProgramCall(uint256 _index, address _addr) external onlyProjectAdmin {
         programCall[_index] = _addr;
     }
