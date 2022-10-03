@@ -9,7 +9,7 @@ contract p2pCall114 {
 
     mapping(uint256=>bool) isKAPitem;
 
-    uint256 feeRate;
+    uint256 fee;
     struct FeeLock {
         uint256 feeIndex;
         uint256 valueLock;
@@ -26,7 +26,7 @@ contract p2pCall114 {
 
     constructor(address _p2pContract) {
         p2pContract = p2pContract006(_p2pContract);
-        feeRate = 250;
+        fee = 250;
     }
     
     function setIsKAPitem(uint256 _tokenIndex, bool _isKAPitem) external onlyProjectAdmin {
@@ -36,11 +36,11 @@ contract p2pCall114 {
         return isKAPitem[_tokenIndex];
     }
 
-    function setFeeRate(uint256 _feeRate) external onlyProjectAdmin {
-        feeRate = _feeRate;
+    function setFee(uint256 _rate) external onlyProjectAdmin {
+        fee = _rate;
     }
-    function getFeeRate() external view returns(uint256) {
-        return feeRate;
+    function getFee() external view returns(uint256) {
+        return fee;
     }
 
     function withdrawFee(
@@ -74,11 +74,11 @@ contract p2pCall114 {
 
         if (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) { // currency offer scenario
             feeLock[dealIndex].feeIndex = _offerTokenIndex;
-            feeLock[dealIndex].valueLock = (_offerTokenAmount/10000) * feeRate;
+            feeLock[dealIndex].valueLock = (_offerTokenAmount/10000) * fee;
 
         } else if (isKAPitem[_offerTokenIndex] == true || _offerNftIndex != 0) { // KAP item or NFT offer scenario
             feeLock[dealIndex].feeIndex = _getTokenIndex;
-            feeLock[dealIndex].valueLock = (_getTokenAmount/10000) * feeRate;
+            feeLock[dealIndex].valueLock = (_getTokenAmount/10000) * fee;
         }
 
         feeLock[dealIndex].isFeeForBoth = _isFeeForBoth;  
@@ -97,8 +97,8 @@ contract p2pCall114 {
     function callRejectDeal(uint256 _index) external {
         require(feeLock[_index].feeIndex != 0, "NF"); // NF : No Fee lock
 
-        uint256 valueLock = feeLock[_index].valueLock;
         uint256 feeIndex = feeLock[_index].feeIndex;
+        uint256 valueLock = feeLock[_index].valueLock;
 
         delete feeLock[_index];
 
@@ -107,9 +107,23 @@ contract p2pCall114 {
         p2pContract.rejectDeal(_index, msg.sender);
     }
 
-    function callConfirmDeal(uint256 _index) external {
+    function callConfirmDeal(uint256 _index, bool _isFeeForBoth) external {
         if (feeLock[_index].isFeeForBoth == false) {
-            (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
+            if (_isFeeForBoth == true) {
+                require(feeLock[_index].feeIndex != 0, "NF");
+
+                uint256 feeIndex = feeLock[_index].feeIndex;
+                uint256 valueLock = feeLock[_index].valueLock;
+
+                delete feeLock[_index];
+
+                (p2pContract.getToken(feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), valueLock * 2);
+
+                (p2pContract.getToken(feeIndex)).transfer(p2pContract.getDeal(_index).sender, valueLock);
+
+            } else if (_isFeeForBoth == false) {
+                (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
+            }
         }
         p2pContract.confirmDeal(_index, msg.sender);
     }
