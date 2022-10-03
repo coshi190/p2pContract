@@ -19,7 +19,7 @@ pragma solidity >=0.6.0;
 
 abstract contract Authorization {
   IAdminProjectRouter public adminRouter;
-  string public constant PROJECT = "morning-moon";
+  string public PROJECT;
 
   modifier onlySuperAdmin() {
     require(adminRouter.isSuperAdmin(msg.sender, PROJECT), "Restricted only super admin");
