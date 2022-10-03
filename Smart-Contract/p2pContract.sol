@@ -52,8 +52,9 @@ contract p2pContract006 {
     event AdminUnlock(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
     event ConfirmDeal(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
 
-    constructor() {
+    constructor(address _committee) {
         projectAdmin = msg.sender;
+        committee = _committee;
     }
 
     function setProjectAdmin(address _addr) external onlyProjectAdmin {
@@ -62,8 +63,8 @@ contract p2pContract006 {
     function getProjectAdmin() external view returns(address) {
         return projectAdmin;
     }
-    function setCommittee(address _committee) external onlyCommittee {
-        committee = _committee;
+    function setCommittee(address _addr) external onlyCommittee {
+        committee = _addr;
     }
     function getCommittee() external view returns(address) {
         return committee;
