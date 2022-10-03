@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import "./p2pContract.sol";
 
-contract p2pCall113 {
+contract p2pCall114 {
 
-    p2pContract005 p2pContract;
+    p2pContract006 p2pContract;
 
     mapping(uint256=>bool) isKAPitem;
 
@@ -25,14 +25,11 @@ contract p2pCall113 {
     }
 
     constructor(address _p2pContract) {
-        p2pContract = p2pContract005(_p2pContract);
+        p2pContract = p2pContract006(_p2pContract);
         feeRate = 250;
     }
     
-    function setIsKAPitem(
-        uint256 _tokenIndex,
-        bool _isKAPitem
-        ) external onlyProjectAdmin {
+    function setIsKAPitem(uint256 _tokenIndex, bool _isKAPitem) external onlyProjectAdmin {
         isKAPitem[_tokenIndex] = _isKAPitem;
     }
     function getIsKAPitem(uint256 _tokenIndex) external view returns(bool) {
@@ -51,7 +48,6 @@ contract p2pCall113 {
         uint256 _amount,
         address _to
         ) external onlyProjectAdmin {
-
         (p2pContract.getToken(_tokenIndex)).transfer(_to, _amount);
     }
 
@@ -113,14 +109,12 @@ contract p2pCall113 {
         if (feeLock[_index].isFeeForBoth == false) {
             (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
         }
-
         p2pContract.confirmDeal(_index, msg.sender);
     }
 
     function getFeeLock(uint256 _dealIndex) external view returns(FeeLock memory) {
         return feeLock[_dealIndex];
     }
-
     function getDealsbyProgramCall() external view returns(uint256[] memory) {
         return dealsbyProgramCall;
     }
