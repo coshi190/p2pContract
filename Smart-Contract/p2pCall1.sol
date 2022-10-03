@@ -70,24 +70,26 @@ contract p2pCall114 {
             (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) || ((isKAPitem[_offerTokenIndex] == true || _offerNftIndex != 0) && (isKAPitem[_getTokenIndex] == false && _getNftIndex == 0)), "IS"
         ); // IS : Invalid Scenario
 
+        uint256 dealIndex = p2pContract.getDealCount() + 1;
+
         if (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) { // currency offer scenario
-            feeLock[p2pContract.getDealCount() + 1].feeIndex = _offerTokenIndex;
-            feeLock[p2pContract.getDealCount() + 1].valueLock = (_offerTokenAmount/10000) * feeRate;
+            feeLock[dealIndex].feeIndex = _offerTokenIndex;
+            feeLock[dealIndex].valueLock = (_offerTokenAmount/10000) * feeRate;
 
         } else if (isKAPitem[_offerTokenIndex] == true || _offerNftIndex != 0) { // KAP item or NFT offer scenario
-            feeLock[p2pContract.getDealCount() + 1].feeIndex = _getTokenIndex;
-            feeLock[p2pContract.getDealCount() + 1].valueLock = (_getTokenAmount/10000) * feeRate;
+            feeLock[dealIndex].feeIndex = _getTokenIndex;
+            feeLock[dealIndex].valueLock = (_getTokenAmount/10000) * feeRate;
         }
 
-        feeLock[p2pContract.getDealCount() + 1].isFeeForBoth = _isFeeForBoth;  
+        feeLock[dealIndex].isFeeForBoth = _isFeeForBoth;  
 
-        if (feeLock[p2pContract.getDealCount() + 1].isFeeForBoth == true) {
-            feeLock[p2pContract.getDealCount() + 1].valueLock *= 2;
+        if (feeLock[dealIndex].isFeeForBoth == true) {
+            feeLock[dealIndex].valueLock *= 2;
         }
 
-        dealsbyProgramCall.push(p2pContract.getDealCount() + 1);
+        dealsbyProgramCall.push(dealIndex);
 
-        (p2pContract.getToken(feeLock[p2pContract.getDealCount() + 1].feeIndex)).transferFrom(msg.sender, address(this), feeLock[p2pContract.getDealCount() + 1].valueLock);
+        (p2pContract.getToken(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
 
         p2pContract.offerDeal(1, msg.sender, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
     }
