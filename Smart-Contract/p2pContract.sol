@@ -233,8 +233,8 @@ contract p2pContract006 {
 
         if (deals[_index].offerTokenIndex != 0) {
             tokens[deals[_index].offerTokenIndex].transfer(deals[_index].receiver, deals[_index].offerTokenAmount);
-
-        } else if (deals[_index].offerNftIndex != 0) {
+        }
+        if (deals[_index].offerNftIndex != 0) {
             nfts[deals[_index].offerNftIndex].transferFrom(address(this), deals[_index].receiver, deals[_index].offerNftId);
         }
 
