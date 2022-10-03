@@ -174,7 +174,7 @@ contract p2pContract006 {
             deals[_index].sender == _sendFrom || (deals[_index].receiver == _sendFrom && block.timestamp > deals[_index].offerTime + 1 weeks), "NP"
         );
 
-        delete deals[_index].status;
+        deals[_index].status = true; // prevent reentrancy
 
         if (deals[_index].offerTokenIndex != 0) {
             tokens[deals[_index].offerTokenIndex].transfer(deals[_index].sender, deals[_index].offerTokenAmount);
@@ -198,7 +198,7 @@ contract p2pContract006 {
     function adminUnlock(uint256 _index, address _to) external onlyCommittee {
         require(deals[_index].status == false, "DC");
 
-        delete deals[_index].status;
+        deals[_index].status = true; // prevent reentrancy
 
         if (deals[_index].offerTokenIndex != 0) {
             tokens[deals[_index].offerTokenIndex].transfer(_to, deals[_index].offerTokenAmount);
