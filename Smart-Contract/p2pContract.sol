@@ -123,7 +123,7 @@ contract p2pContract006 {
         uint256 _getNftIndex,
         uint256 _getNftId
     ) external {
-        require(msg.sender == programCall[_callIndex], "NP"); // NP : Not Permission to call
+        require(msg.sender == programCall[_callIndex], "NP");
 
         if(isActivatedOnlyKycAddress) {
             require(
@@ -168,7 +168,7 @@ contract p2pContract006 {
     }
 
     function rejectDeal(uint256 _index, address _sendFrom) external {
-        require(msg.sender == programCall[deals[_index].callIndex], "NP"); // NP : Not Permission to call
+        require(msg.sender == programCall[deals[_index].callIndex], "NP");
         require(deals[_index].status == false, "DC"); // DC : Deal Complete
         require(
             deals[_index].sender == _sendFrom || (deals[_index].receiver == _sendFrom && block.timestamp > deals[_index].offerTime + 1 weeks), "NP"
@@ -196,7 +196,7 @@ contract p2pContract006 {
 
     // adminTransfer function (for bitkub chain policy) : BKC admin (committee) can transfer/unlock token/nft out of p2pContract
     function adminUnlock(uint256 _index, address _to) external onlyCommittee {
-        require(deals[_index].status == false, "DC"); // DC : Deal Complete
+        require(deals[_index].status == false, "DC");
 
         delete deals[_index].status;
 
@@ -219,9 +219,9 @@ contract p2pContract006 {
     }
 
     function confirmDeal(uint256 _index, address _sendFrom) external {
-        require(msg.sender == programCall[deals[_index].callIndex], "NP"); // NP : Not Permission to call
+        require(msg.sender == programCall[deals[_index].callIndex], "NP");
         require(deals[_index].receiver == _sendFrom, "NP");
-        require(deals[_index].status == false, "DC"); // DC : Deal Complete
+        require(deals[_index].status == false, "DC");
         
         deals[_index].status = true;
         
