@@ -123,6 +123,8 @@ contract p2pCall114 {
 
             } else if (_isFeeForBoth == false) {
                 (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
+
+                delete feeLock[_index];
             }
         }
         p2pContract.confirmDeal(_index, msg.sender);
