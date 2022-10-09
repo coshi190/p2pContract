@@ -244,9 +244,9 @@ contract p2pContract006 {
                 delete activeDeals[i];
             }
         }
-        completeDeals.push(dealCount);
+        completeDeals.push(_index);
 
-        emit ConfirmDeal(deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].callIndex, _index);
+        emit ConfirmDeal(deals[_index].sender, deals[_index].receiver, deals[_index].callIndex, _index);
     }
 
     function getDeal(uint256 _index) external view returns(Deal memory) {
