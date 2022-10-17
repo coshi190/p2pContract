@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0;
 
-import "./p2pContract-edit.sol";
+import "./p2pContract.sol";
 
 contract rankBoard003 {
     // this contract have nothing to do with main p2pContract contract's stage
