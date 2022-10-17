@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import "./p2pContract.sol";
 
-contract p2pCall114 {
+contract p2pCall115 is ReentrancyGuard {
 
-    p2pContract006 p2pContract;
+    p2pContract007 p2pContract;
 
     mapping(uint256=>bool) isKAPitem;
 
@@ -24,19 +24,28 @@ contract p2pCall114 {
         _;
     }
 
+    event SetKAPitem(uint256 indexed _tokenIndex, bool indexed _isKAPitem);
+    event ChangeFee(uint256 indexed _oldRate, uint256 indexed _newRate);
+    event WithdrawFee(uint256 indexed _tokenIndex, address indexed _to, uint256 _amount);
+    event LockFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
+    event RejectFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
+    event ConfirmFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
+
     constructor(address _p2pContract) {
-        p2pContract = p2pContract006(_p2pContract);
+        p2pContract = p2pContract007(_p2pContract);
         fee = 250;
     }
     
     function setIsKAPitem(uint256 _tokenIndex, bool _isKAPitem) external onlyProjectAdmin {
         isKAPitem[_tokenIndex] = _isKAPitem;
+        emit SetKAPitem(_tokenIndex, _isKAPitem);
     }
     function getIsKAPitem(uint256 _tokenIndex) external view returns(bool) {
         return isKAPitem[_tokenIndex];
     }
 
     function setFee(uint256 _rate) external onlyProjectAdmin {
+        emit ChangeFee(fee, _rate);
         fee = _rate;
     }
     function getFee() external view returns(uint256) {
@@ -49,6 +58,7 @@ contract p2pCall114 {
         address _to
         ) external onlyProjectAdmin {
         (p2pContract.getToken(_tokenIndex)).transfer(_to, _amount);
+        emit WithdrawFee(_tokenIndex, _to, _amount);
     }
 
     function callOfferDeal(
@@ -81,52 +91,51 @@ contract p2pCall114 {
             feeLock[dealIndex].valueLock = (_getTokenAmount/10000) * fee;
         }
 
-        feeLock[dealIndex].isFeeForBoth = _isFeeForBoth;  
+        feeLock[dealIndex].isFeeForBoth = _isFeeForBoth;
 
         if (feeLock[dealIndex].isFeeForBoth == true) {
             feeLock[dealIndex].valueLock *= 2;
         }
 
+        (p2pContract.getToken(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
+
         dealsbyProgramCall.push(dealIndex);
 
-        (p2pContract.getToken(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
+        emit LockFee(_isFeeForBoth, feeLock[dealIndex].feeIndex, feeLock[dealIndex].valueLock);
 
         p2pContract.offerDeal(1, msg.sender, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
     }
 
-    function callRejectDeal(uint256 _index) external {
+    function callRejectDeal(uint256 _index) external nonReentrant {
         require(feeLock[_index].feeIndex != 0, "NF"); // NF : No Fee lock
 
-        uint256 feeIndex = feeLock[_index].feeIndex;
-        uint256 valueLock = feeLock[_index].valueLock;
+        (p2pContract.getToken(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
+
+        emit RejectFee(feeLock[_index].isFeeForBoth, feeLock[_index].feeIndex, feeLock[_index].valueLock);
 
         delete feeLock[_index];
-
-        (p2pContract.getToken(feeIndex)).transfer(p2pContract.getDeal(_index).sender, valueLock);
 
         p2pContract.rejectDeal(_index, msg.sender);
     }
 
-    function callConfirmDeal(uint256 _index, bool _isFeeForBoth) external {
+    function callConfirmDeal(uint256 _index, bool _isFeeForBoth) external nonReentrant {
         if (feeLock[_index].isFeeForBoth == false) {
             if (_isFeeForBoth == true) {
                 require(feeLock[_index].feeIndex != 0, "NF");
 
-                uint256 feeIndex = feeLock[_index].feeIndex;
-                uint256 valueLock = feeLock[_index].valueLock;
+                (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock * 2);
 
-                delete feeLock[_index];
-
-                (p2pContract.getToken(feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), valueLock * 2);
-
-                (p2pContract.getToken(feeIndex)).transfer(p2pContract.getDeal(_index).sender, valueLock);
+                (p2pContract.getToken(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
 
             } else if (_isFeeForBoth == false) {
                 (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
-
-                delete feeLock[_index];
             }
         }
+
+        emit ConfirmFee(feeLock[_index].isFeeForBoth, feeLock[_index].feeIndex, feeLock[_index].valueLock);
+
+        delete feeLock[_index];
+        
         p2pContract.confirmDeal(_index, msg.sender);
     }
 
