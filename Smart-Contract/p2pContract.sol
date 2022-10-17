@@ -60,17 +60,17 @@ contract p2pContract007 is ReentrancyGuard {
     uint256[] rejectDeals;
     uint256[] completeDeals;
 
-    event ProjectAdminChange(address indexed _oldAdmin, address indexed _newAdmin);
-    event CommitteeChange(address indexed _oldAdmin, address indexed _newAdmin);
-    event SetProgramCall(uint256 indexed _callIndex, address indexed _programCallAddr);
-    event SetToken(uint256 indexed _index, address indexed _tokenAddr);
-    event SetNft(uint256 indexed _index, address indexed _nftAddr);
-    event SetKyc(address indexed _kycAddr);
-    event ActivateOnlyKycAddress(bool indexed _isActivatedOnlyKycAddress, uint256 indexed _acceptedKycLevel);
-    event OfferDeal(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
-    event RejectDeal(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
-    event AdminUnlock(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
-    event ConfirmDeal(address indexed _sender, address indexed _receiver, uint256 indexed _callIndex, uint256 _dealIndex);
+    event ProjectAdminChange(address indexed oldAdmin, address indexed newAdmin);
+    event CommitteeChange(address indexed oldAdmin, address indexed newAdmin);
+    event SetProgramCall(uint256 indexed callIndex, address indexed programCallAddr);
+    event SetToken(uint256 indexed index, address indexed tokenAddr);
+    event SetNft(uint256 indexed index, address indexed nftAddr);
+    event SetKyc(address indexed kycAddr);
+    event ActivateOnlyKycAddress(bool indexed isActivatedOnlyKycAddress, uint256 indexed acceptedKycLevel);
+    event OfferDeal(address indexed sender, address indexed receiver, uint256 indexed callIndex, uint256 dealIndex);
+    event RejectDeal(address indexed sender, address indexed receiver, uint256 indexed callIndex, uint256 dealIndex);
+    event AdminUnlock(address indexed sender, address indexed receiver, uint256 indexed callIndex, uint256 dealIndex);
+    event ConfirmDeal(address indexed sender, address indexed receiver, uint256 indexed callIndex, uint256 dealIndex);
 
     constructor(address _committee) {
         projectAdmin = msg.sender;
