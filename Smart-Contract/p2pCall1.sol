@@ -24,12 +24,12 @@ contract p2pCall115 is ReentrancyGuard {
         _;
     }
 
-    event SetKAPitem(uint256 indexed _tokenIndex, bool indexed _isKAPitem);
-    event ChangeFee(uint256 indexed _oldRate, uint256 indexed _newRate);
-    event WithdrawFee(uint256 indexed _tokenIndex, address indexed _to, uint256 _amount);
-    event LockFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
-    event RejectFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
-    event ConfirmFee(bool indexed _isFeeForBoth, uint256 indexed _feeIndex, uint256 _valueLock);
+    event SetKAPitem(uint256 indexed tokenIndex, bool indexed isKAPitem);
+    event ChangeFee(uint256 indexed oldRate, uint256 indexed newRate);
+    event WithdrawFee(uint256 indexed tokenIndex, address indexed to, uint256 amount);
+    event LockFee(bool indexed isFeeForBoth, uint256 indexed feeIndex, uint256 valueLock);
+    event RejectFee(bool indexed isFeeForBoth, uint256 indexed feeIndex, uint256 valueLock);
+    event ConfirmFee(bool indexed isFeeForBoth, uint256 indexed feeIndex, uint256 valueLock);
 
     constructor(address _p2pContract) {
         p2pContract = p2pContract007(_p2pContract);
