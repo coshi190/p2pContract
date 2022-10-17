@@ -25,13 +25,13 @@ contract rankBoard003 {
         _;
     }
 
-    event MainSubscriptionPriceChange(uint256 indexed _oldPrice, uint256 indexed _newPrice);
-    event MainSubscriptionCostWithdraw(uint256 indexed _tokenIndex, address indexed _to, uint256 _amount);
-    event MainSubscriptionListUpdate(address[] indexed _oldList, address[] indexed _newList);
-    event Subscribe(address indexed _subscriptionAddr, uint256 indexed _subscriptionTime);
-    event PartnerAdminChange(uint256 indexed _partnerIndex, address indexed _newAdmin);
-    event PartnerSubscriptionListUpdate(uint256 indexed _partnerIndex, uint256 indexed _subscriptionIndex, address indexed _subscriptionAddr);
-    event NftProfileChange(address indexed _userAddr, uint256 indexed _nftIndex, uint256 indexed _nftId);
+    event MainSubscriptionPriceChange(uint256 indexed oldPrice, uint256 indexed newPrice);
+    event MainSubscriptionCostWithdraw(uint256 indexed tokenIndex, address indexed to, uint256 amount);
+    event MainSubscriptionListUpdate(address[] indexed oldList, address[] indexed newList);
+    event Subscribe(address indexed subscriptionAddr, uint256 indexed subscriptionTime);
+    event PartnerAdminChange(uint256 indexed partnerIndex, address indexed newAdmin);
+    event PartnerSubscriptionListUpdate(uint256 indexed partnerIndex, uint256 indexed subscriptionIndex, address indexed subscriptionAddr);
+    event NftProfileChange(address indexed userAddr, uint256 indexed nftIndex, uint256 indexed nftId);
 
     constructor(address _p2pContract) {
         p2pContract = p2pContract007(_p2pContract);
