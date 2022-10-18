@@ -13,7 +13,7 @@ contract p2pContract007 is ReentrancyGuard {
     3) Listing or unlisting KAP20 or KAP721 contract by calling setToken() & setNft()
     4) Setting and activating KYC policy to this contract by calling setKYC() & activateOnlyKycAddress()
     */
-    address projectAdmin;
+    address internal projectAdmin;
     modifier onlyProjectAdmin() {
         require(msg.sender == projectAdmin, "NP"); // NP : Not Permission to call
         _;
@@ -23,20 +23,20 @@ contract p2pContract007 is ReentrancyGuard {
     1) Transfering committee authority to new address or contract by calling setCommittee()
     2) Transfering/unlocking token/nft out of p2pContract by calling adminUnlock()
     */
-    address committee;
+    address internal committee;
     modifier onlyCommittee() {
         require(msg.sender == committee, "NP");
         _;
     }
     
-    mapping(uint256=>address) programCall; // for variety of platform fee collecting policy
+    mapping(uint256=>address) internal programCall; // for variety of platform fee collecting policy
 
-    mapping(uint256=>KAP20) tokens;
-    mapping(uint256=>KAP721) nfts;
+    mapping(uint256=>KAP20) internal tokens;
+    mapping(uint256=>KAP721) internal nfts;
 
-    IKYCBitkubChain kyc;
-    bool isActivatedOnlyKycAddress;
-    uint256 acceptedKycLevel;
+    IKYCBitkubChain internal kyc;
+    bool internal isActivatedOnlyKycAddress;
+    uint256 internal acceptedKycLevel;
     
     struct Deal {
         uint256 callIndex;
@@ -53,12 +53,12 @@ contract p2pContract007 is ReentrancyGuard {
         uint256 offerTime;
         bool status;
     }
-    mapping(uint256=>Deal) deals;
-    uint256 dealCount;
-    mapping(address=>uint256[]) dealsbySender;
-    mapping(address=>uint256[]) dealsbyReceiver;
-    uint256[] rejectDeals;
-    uint256[] completeDeals;
+    mapping(uint256=>Deal) internal deals;
+    uint256 internal dealCount;
+    mapping(address=>uint256[]) internal dealsbySender;
+    mapping(address=>uint256[]) internal dealsbyReceiver;
+    uint256[] internal rejectDeals;
+    uint256[] internal completeDeals;
 
     event ProjectAdminChange(address indexed oldAdmin, address indexed newAdmin);
     event CommitteeChange(address indexed oldAdmin, address indexed newAdmin);
