@@ -5,20 +5,20 @@ import "./p2pContract.sol";
 
 contract rankBoard003 {
     // this contract have nothing to do with main p2pContract contract's stage
-    p2pContract007 internal p2pContract;
+    p2pContract007 private p2pContract;
 
-    uint256 internal mainSubscriptionPrice;
+    uint256 private mainSubscriptionPrice;
 
-    mapping(address=>uint256) internal mainSubscriptionTime;
-    address[] internal mainSubscriptionList;
+    mapping(address=>uint256) private mainSubscriptionTime;
+    address[] private mainSubscriptionList;
 
-    mapping(uint256=>address[]) internal partnerSubscriptionList;
+    mapping(uint256=>address[]) private partnerSubscriptionList;
 
     struct NftProfile {
         uint256 nftIndex;
         uint256 nftId;
     }    
-    mapping(address=>NftProfile) internal userNftProfile;
+    mapping(address=>NftProfile) private userNftProfile;
 
     modifier onlyProjectAdmin() {
         require(msg.sender == p2pContract.getProjectAdmin(), "NP"); // NP : Not Permission to call
