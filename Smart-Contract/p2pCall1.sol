@@ -5,19 +5,19 @@ import "./p2pContract.sol";
 
 contract p2pCall115 is ReentrancyGuard {
 
-    p2pContract007 internal p2pContract;
+    p2pContract007 private p2pContract;
 
-    mapping(uint256=>bool) internal isKAPitem;
+    mapping(uint256=>bool) private isKAPitem;
 
-    uint256 internal fee;
+    uint256 private fee;
     struct FeeLock {
         uint256 feeIndex;
         uint256 valueLock;
         bool isFeeForBoth;
     }
-    mapping(uint256=>FeeLock) internal feeLock;
+    mapping(uint256=>FeeLock) private feeLock;
 
-    uint256[] internal dealsbyProgramCall;
+    uint256[] private dealsbyProgramCall;
 
     modifier onlyProjectAdmin() {
         require(msg.sender == p2pContract.getProjectAdmin(), "NP"); // NP : Not Permission to call
