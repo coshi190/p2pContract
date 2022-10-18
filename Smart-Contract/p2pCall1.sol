@@ -5,22 +5,22 @@ import "./p2pContract.sol";
 
 contract p2pCall115 is ReentrancyGuard {
 
-    p2pContract007 private p2pContract;
+    p2pContract007 public p2pContract;
 
-    mapping(uint256=>bool) private isKAPitem;
+    mapping(uint256=>bool) public isKAPitem;
 
-    uint256 private fee;
+    uint256 public fee;
     struct FeeLock {
         uint256 feeIndex;
         uint256 valueLock;
         bool isFeeForBoth;
     }
-    mapping(uint256=>FeeLock) private feeLock;
+    mapping(uint256=>FeeLock) public feeLock;
 
-    uint256[] private dealsbyProgramCall;
+    uint256[] public dealsbyProgramCall;
 
     modifier onlyProjectAdmin() {
-        require(msg.sender == p2pContract.getProjectAdmin(), "NP"); // NP : Not Permission to call
+        require(msg.sender == p2pContract.projectAdmin(), "NP"); // NP : Not Permission to call
         _;
     }
 
@@ -40,16 +40,10 @@ contract p2pCall115 is ReentrancyGuard {
         isKAPitem[_tokenIndex] = _isKAPitem;
         emit SetKAPitem(_tokenIndex, _isKAPitem);
     }
-    function getIsKAPitem(uint256 _tokenIndex) external view returns(bool) {
-        return isKAPitem[_tokenIndex];
-    }
 
     function setFee(uint256 _rate) external onlyProjectAdmin {
         emit ChangeFee(fee, _rate);
         fee = _rate;
-    }
-    function getFee() external view returns(uint256) {
-        return fee;
     }
 
     function withdrawFee(
@@ -57,7 +51,7 @@ contract p2pCall115 is ReentrancyGuard {
         uint256 _amount,
         address _to
         ) external onlyProjectAdmin {
-        (p2pContract.getToken(_tokenIndex)).transfer(_to, _amount);
+        (p2pContract.tokens(_tokenIndex)).transfer(_to, _amount);
         emit WithdrawFee(_tokenIndex, _to, _amount);
     }
 
@@ -80,7 +74,7 @@ contract p2pCall115 is ReentrancyGuard {
             (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) || ((isKAPitem[_offerTokenIndex] == true || _offerNftIndex != 0) && (isKAPitem[_getTokenIndex] == false && _getNftIndex == 0)), "IS"
         ); // IS : Invalid Scenario
 
-        uint256 dealIndex = p2pContract.getDealCount() + 1;
+        uint256 dealIndex = p2pContract.dealCount() + 1;
 
         if (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) { // currency offer scenario
             feeLock[dealIndex].feeIndex = _offerTokenIndex;
@@ -97,7 +91,7 @@ contract p2pCall115 is ReentrancyGuard {
             feeLock[dealIndex].valueLock *= 2;
         }
 
-        (p2pContract.getToken(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
+        (p2pContract.tokens(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
 
         dealsbyProgramCall.push(dealIndex);
 
@@ -109,7 +103,7 @@ contract p2pCall115 is ReentrancyGuard {
     function callRejectDeal(uint256 _index) external nonReentrant {
         require(feeLock[_index].feeIndex != 0, "NF"); // NF : No Fee lock
 
-        (p2pContract.getToken(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
+        (p2pContract.tokens(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
 
         emit RejectFee(feeLock[_index].isFeeForBoth, feeLock[_index].feeIndex, feeLock[_index].valueLock);
 
@@ -123,12 +117,12 @@ contract p2pCall115 is ReentrancyGuard {
             if (_isFeeForBoth == true) {
                 require(feeLock[_index].feeIndex != 0, "NF");
 
-                (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock * 2);
+                (p2pContract.tokens(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock * 2);
 
-                (p2pContract.getToken(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
+                (p2pContract.tokens(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
 
             } else if (_isFeeForBoth == false) {
-                (p2pContract.getToken(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
+                (p2pContract.tokens(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
             }
         }
 
@@ -137,13 +131,6 @@ contract p2pCall115 is ReentrancyGuard {
         delete feeLock[_index];
         
         p2pContract.confirmDeal(_index, msg.sender);
-    }
-
-    function getFeeLock(uint256 _dealIndex) external view returns(FeeLock memory) {
-        return feeLock[_dealIndex];
-    }
-    function getDealsbyProgramCall() external view returns(uint256[] memory) {
-        return dealsbyProgramCall;
     }
     
 }
