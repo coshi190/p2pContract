@@ -5,7 +5,7 @@ pragma solidity >=0.8.0;
 import "./KAPsupport.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract p2pContract007 is ReentrancyGuard {
+contract p2pContract is ReentrancyGuard {
 
     /* 
     projectAdmin Authorities : 
@@ -56,10 +56,6 @@ contract p2pContract007 is ReentrancyGuard {
     }
     mapping(uint256=>Deal) private deals;
     uint256 public dealCount;
-    mapping(address=>uint256[]) public dealsbySender;
-    mapping(address=>uint256[]) public dealsbyReceiver;
-    uint256[] public rejectDeals;
-    uint256[] public completeDeals;
 
     event ProjectAdminChange(address indexed oldAdmin, address indexed newAdmin);
     event CommitteeChange(address indexed oldAdmin, address indexed newAdmin);
@@ -78,12 +74,12 @@ contract p2pContract007 is ReentrancyGuard {
     }
 
     function setProjectAdmin(address _addr) external onlyProjectAdmin {
-        require(_addr != address(0), "AZ"); // AZ : can not set to Address Zero
+        require(_addr != projectAdmin, "OA"); // OA : can not set to Old Admin
         emit ProjectAdminChange(projectAdmin, _addr);
         projectAdmin = _addr;
     }
     function setCommittee(address _addr) external onlyCommittee {
-        require(_addr != address(0), "AZ"); // AZ : can not set to Address Zero
+        require(_addr != committee, "OA"); // OA : can not set to Old Admin
         emit CommitteeChange(committee, _addr);
         committee = _addr;
     }
@@ -163,9 +159,6 @@ contract p2pContract007 is ReentrancyGuard {
 
         deals[dealCount].offerTime = block.timestamp;
 
-        dealsbySender[_sender].push(dealCount);
-        dealsbyReceiver[_receiver].push(dealCount);
-
         emit OfferDeal(deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].callIndex, dealCount);
     }
 
@@ -192,8 +185,6 @@ contract p2pContract007 is ReentrancyGuard {
             nfts[deals[_index].offerNftIndex].transferFrom(address(this), _to, deals[_index].offerNftId);
         }
 
-        rejectDeals.push(_index);
-
         emit RejectDeal(msg.sender, deals[_index].sender, deals[_index].receiver, deals[_index].callIndex, _index);
 
         delete deals[_index];
@@ -219,8 +210,6 @@ contract p2pContract007 is ReentrancyGuard {
         if (deals[_index].offerNftIndex != 0) {
             nfts[deals[_index].offerNftIndex].transferFrom(address(this), deals[_index].receiver, deals[_index].offerNftId);
         }
-
-        completeDeals.push(_index);
 
         emit ConfirmDeal(deals[_index].sender, deals[_index].receiver, deals[_index].callIndex, _index);
     }
