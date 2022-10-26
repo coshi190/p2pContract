@@ -3,9 +3,9 @@ pragma solidity >=0.8.0;
 
 import "./p2pContract.sol";
 
-contract p2pCall115 is ReentrancyGuard {
+contract p2pCall is ReentrancyGuard {
 
-    p2pContract007 public p2pContract;
+    p2pContract public mainContract;
 
     mapping(uint256=>bool) public isKAPitem;
 
@@ -17,10 +17,8 @@ contract p2pCall115 is ReentrancyGuard {
     }
     mapping(uint256=>FeeLock) public feeLock;
 
-    uint256[] public dealsbyProgramCall;
-
     modifier onlyProjectAdmin() {
-        require(msg.sender == p2pContract.projectAdmin(), "NP"); // NP : Not Permission to call
+        require(msg.sender == mainContract.projectAdmin(), "NP"); // NP : Not Permission to call
         _;
     }
 
@@ -32,7 +30,7 @@ contract p2pCall115 is ReentrancyGuard {
     event ConfirmFee(bool indexed isFeeForBoth, uint256 indexed feeIndex, uint256 valueLock);
 
     constructor(address _p2pContract) {
-        p2pContract = p2pContract007(_p2pContract);
+        mainContract = p2pContract(_p2pContract);
         fee = 250;
     }
     
@@ -51,7 +49,7 @@ contract p2pCall115 is ReentrancyGuard {
         uint256 _amount,
         address _to
         ) external onlyProjectAdmin {
-        (p2pContract.tokens(_tokenIndex)).transfer(_to, _amount);
+        (mainContract.tokens(_tokenIndex)).transfer(_to, _amount);
         emit WithdrawFee(_tokenIndex, _to, _amount);
     }
 
@@ -74,7 +72,7 @@ contract p2pCall115 is ReentrancyGuard {
             (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) || ((isKAPitem[_offerTokenIndex] == true || _offerNftIndex != 0) && (isKAPitem[_getTokenIndex] == false && _getNftIndex == 0)), "IS"
         ); // IS : Invalid Scenario
 
-        uint256 dealIndex = p2pContract.dealCount() + 1;
+        uint256 dealIndex = mainContract.dealCount() + 1;
 
         if (isKAPitem[_offerTokenIndex] == false && _offerNftIndex == 0) { // currency offer scenario
             feeLock[dealIndex].feeIndex = _offerTokenIndex;
@@ -91,25 +89,23 @@ contract p2pCall115 is ReentrancyGuard {
             feeLock[dealIndex].valueLock *= 2;
         }
 
-        (p2pContract.tokens(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
-
-        dealsbyProgramCall.push(dealIndex);
+        (mainContract.tokens(feeLock[dealIndex].feeIndex)).transferFrom(msg.sender, address(this), feeLock[dealIndex].valueLock);
 
         emit LockFee(_isFeeForBoth, feeLock[dealIndex].feeIndex, feeLock[dealIndex].valueLock);
 
-        p2pContract.offerDeal(1, msg.sender, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
+        mainContract.offerDeal(1, msg.sender, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
     }
 
     function callRejectDeal(uint256 _index) external nonReentrant {
         require(feeLock[_index].feeIndex != 0, "NF"); // NF : No Fee lock
 
-        (p2pContract.tokens(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
+        (mainContract.tokens(feeLock[_index].feeIndex)).transfer(mainContract.getDeal(_index).sender, feeLock[_index].valueLock);
 
         emit RejectFee(feeLock[_index].isFeeForBoth, feeLock[_index].feeIndex, feeLock[_index].valueLock);
 
         delete feeLock[_index];
 
-        p2pContract.rejectDeal(_index, msg.sender);
+        mainContract.rejectDeal(_index, msg.sender);
     }
 
     function callConfirmDeal(uint256 _index, bool _isFeeForBoth) external nonReentrant {
@@ -117,12 +113,12 @@ contract p2pCall115 is ReentrancyGuard {
             if (_isFeeForBoth == true) {
                 require(feeLock[_index].feeIndex != 0, "NF");
 
-                (p2pContract.tokens(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock * 2);
+                (mainContract.tokens(feeLock[_index].feeIndex)).transferFrom(mainContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock * 2);
 
-                (p2pContract.tokens(feeLock[_index].feeIndex)).transfer(p2pContract.getDeal(_index).sender, feeLock[_index].valueLock);
+                (mainContract.tokens(feeLock[_index].feeIndex)).transfer(mainContract.getDeal(_index).sender, feeLock[_index].valueLock);
 
             } else if (_isFeeForBoth == false) {
-                (p2pContract.tokens(feeLock[_index].feeIndex)).transferFrom(p2pContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
+                (mainContract.tokens(feeLock[_index].feeIndex)).transferFrom(mainContract.getDeal(_index).receiver, address(this), feeLock[_index].valueLock);
             }
         }
 
@@ -130,7 +126,7 @@ contract p2pCall115 is ReentrancyGuard {
 
         delete feeLock[_index];
         
-        p2pContract.confirmDeal(_index, msg.sender);
+        mainContract.confirmDeal(_index, msg.sender);
     }
     
 }
