@@ -7,7 +7,7 @@ contract rankBoard003 {
     // this contract have nothing to do with main p2pContract contract's stage
     p2pContract007 public p2pContract;
 
-    uint256 public mainSubscriptionPrice;
+    uint256[] public mainSubscriptionPrice;
 
     mapping(address=>uint256) public mainSubscriptionTime;
     address[] public mainSubscriptionList;
@@ -25,7 +25,7 @@ contract rankBoard003 {
         _;
     }
 
-    event MainSubscriptionPriceChange(uint256 indexed oldPrice, uint256 indexed newPrice);
+    event MainSubscriptionPriceChange(uint256 indexed tokenIndex, uint256 indexed oldPrice, uint256 indexed newPrice);
     event MainSubscriptionCostWithdraw(uint256 indexed tokenIndex, address indexed to, uint256 amount);
     event MainSubscriptionListUpdate(address[] indexed oldList, address[] indexed newList);
     event Subscribe(address indexed subscriptionAddr, uint256 indexed subscriptionTime);
@@ -35,12 +35,12 @@ contract rankBoard003 {
 
     constructor(address _p2pContract) {
         p2pContract = p2pContract007(_p2pContract);
-        mainSubscriptionPrice = 100000000000000000;
+        mainSubscriptionPrice[1] = 10**17;
     }
 
-    function setMainSubscriptionPrice(uint256 _price) external onlyProjectAdmin {
-        emit MainSubscriptionPriceChange(mainSubscriptionPrice, _price);
-        mainSubscriptionPrice = _price;
+    function setMainSubscriptionPrice(uint256 _tokenIndex, uint256 _price) external onlyProjectAdmin {
+        emit MainSubscriptionPriceChange(_tokenIndex, mainSubscriptionPrice, _price);
+        mainSubscriptionPrice[_tokenIndex] = _price;
     }
 
     function withdrawMainSubscriptionCost(
