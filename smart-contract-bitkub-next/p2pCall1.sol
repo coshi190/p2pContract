@@ -47,7 +47,6 @@ contract p2pCall1 is ReentrancyGuard {
         fee = 250;
     }
 
-    // setKYC function & activateOnlyKycAddress function (for bitkub chain policy)
     function setKYC(address _addr) external onlyCommittee {
         kyc = IKYCBitkubChain(_addr);
         emit SetKyc(_addr);
