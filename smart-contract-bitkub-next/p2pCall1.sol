@@ -66,7 +66,6 @@ contract p2pCall1 is ReentrancyGuard {
         emit ChangeFee(fee, _rate);
         fee = _rate;
     }
-
     function withdrawFee(
         uint256 _tokenIndex,
         uint256 _amount,
@@ -90,7 +89,6 @@ contract p2pCall1 is ReentrancyGuard {
         ) external {
         _callOfferDeal(_isFeeForBoth, msg.sender, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
     }
-
     function callOfferDealBitkubNext(
         bool _isFeeForBoth,
         address _receiver,
@@ -108,7 +106,6 @@ contract p2pCall1 is ReentrancyGuard {
 
         _callOfferDeal(_isFeeForBoth, _bitkubnext, _receiver, _offerTokenIndex, _offerTokenAmount, _offerNftIndex, _offerNftId, _getTokenIndex, _getTokenAmount, _getNftIndex, _getNftId);
     }
-
     function _callOfferDeal(
         bool _isFeeForBoth,
         address _sender,
@@ -161,8 +158,6 @@ contract p2pCall1 is ReentrancyGuard {
 
         _callRejectDeal(_index, _bitkubnext);
     }
-    
-
     function _callRejectDeal(uint256 _index, address _sendFrom) private {
         require(feeLock[_index].feeIndex != 0, "NF"); // NF : No Fee lock
 
@@ -178,13 +173,11 @@ contract p2pCall1 is ReentrancyGuard {
     function callConfirmDeal(uint256 _index, bool _isFeeForBoth) external nonReentrant {
         _callConfirmDeal(_index, _isFeeForBoth, msg.sender);
     }
-
     function callConfirmDealBitkubNext(uint256 _index, bool _isFeeForBoth, address _bitkubnext) external nonReentrant onlyCallHelper {
         require(kyc.kycsLevel(_bitkubnext) >= acceptedKycLevel, "KYC");
 
         _callConfirmDeal(_index, _isFeeForBoth, _bitkubnext);
     }
-
     function _callConfirmDeal(uint256 _index, bool _isFeeForBoth, address _receiver) private {
         if (feeLock[_index].isFeeForBoth == false) {
             if (_isFeeForBoth == true) {
