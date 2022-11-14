@@ -147,7 +147,7 @@ contract p2pContract is ReentrancyGuard {
         emit OfferDeal(deals[dealCount].sender, deals[dealCount].receiver, deals[dealCount].callIndex, dealCount);
     }
 
-    function rejectDeal(uint256 _index, address _sendFrom) external nonReentrant {
+    function rejectDeal(uint256 _index, address _sendFrom) external {
         require(msg.sender == programCall[deals[_index].callIndex], "NP");
         require(
             deals[_index].sender == _sendFrom || (deals[_index].receiver == _sendFrom && block.timestamp > deals[_index].offerTime + 1 weeks), "NP"
@@ -175,7 +175,7 @@ contract p2pContract is ReentrancyGuard {
         delete deals[_index];
     }
 
-    function confirmDeal(uint256 _index, address _sendFrom) external nonReentrant {
+    function confirmDeal(uint256 _index, address _sendFrom) external {
         require(msg.sender == programCall[deals[_index].callIndex], "NP");
         require(deals[_index].receiver == _sendFrom, "NP");
         require(deals[_index].status == false, "DC");
