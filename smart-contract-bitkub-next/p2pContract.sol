@@ -7,31 +7,21 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract p2pContract is ReentrancyGuard {
 
-    /* 
-    projectAdmin Authorities : 
-    1) Transferring projectAdmin authority to new address or contract by calling setProjectAdmin()
-    2) Adding or removing main p2pContract's platfrom fee collecting policy by calling setProgramCall()
-    3) Listing or unlisting KAP20 or KAP721 contract by calling setToken() & setNft()
-    4) Setting and activating KYC policy to this contract by calling setKYC() & activateOnlyKycAddress()
-    */
     address public projectAdmin;
     modifier onlyProjectAdmin() {
         require(msg.sender == projectAdmin, "NP"); // NP : Not Permission to call
         _;
     }
-    /* 
-    committee (BKC admin) Authorities : 
-    1) Transfering committee authority to new address or contract by calling setCommittee()
-    2) Transfering/unlocking token/nft out of p2pContract by calling adminUnlock()
-    */
+    
     address public committee;
     modifier onlyCommittee() {
         require(msg.sender == committee, "NP");
         _;
     }
+    
     address public superAdmin;
     
-    mapping(uint256=>address) public programCall; // for variety of platform fee collecting policy
+    mapping(uint256=>address) public programCall;
 
     mapping(uint256=>IKAP20) public tokens;
     mapping(uint256=>IKAP721) public nfts;
@@ -85,7 +75,8 @@ contract p2pContract is ReentrancyGuard {
         emit SuperAdminChange(superAdmin, _addr);
         superAdmin = _addr;
     }
-
+    
+    // for variety of platform fee collecting policy
     function setProgramCall(uint256 _index, address _addr) external onlyProjectAdmin {
         programCall[_index] = _addr;
         emit SetProgramCall(_index, _addr);
