@@ -66,12 +66,12 @@ contract p2pContract is ReentrancyGuard {
         projectAdmin = _addr;
     }
     function setCommittee(address _addr) external onlyCommittee {
-        require(_addr != committee, "OA"); // OA : can not set to Old Admin
+        require(_addr != committee, "OA");
         emit CommitteeChange(committee, _addr);
         committee = _addr;
     }
     function setSuperAdmin(address _addr) external onlyProjectAdmin {
-        require(_addr != superAdmin, "OA"); // OA : can not set to Old Admin
+        require(_addr != superAdmin, "OA");
         emit SuperAdminChange(superAdmin, _addr);
         superAdmin = _addr;
     }
