@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>p2pContract | Secured P2P Trade On BKC</title>
+        <link href="./style.css" rel="stylesheet" /> 
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/site.webmanifest">
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#000000">
+        <link rel="shortcut icon" href="/favicon/favicon.ico">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
+        <meta property="og:image" content="https://www.p2pcontract.finance/logo/p2pContractYellow.png">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+        <script src="./script.js"></script>
+    </head>
+    <body onload="startertrade()">
+        <nav>
+            <div id="realnav">
+                <button id="logo" onclick="startertrade()">p2pContract</button>
+                <div id="menuleft">
+                    <div class="dropdown">
+                        <button id="rankboard" class="navbutton" onclick="showRankBy(1)">rankBoard[BETA]</button>
+                        <div id="menuRank1" class="dropdown-boxMenu">
+                            <div class='dropdown-contentRank'>
+                                <button id="tradearena" class="menuchoose" onclick="rankPage(0)">TRADING ARENA</button>
+                                <button id="CMholder" class="menuchoose" onclick="showRankBy(2)">TOP CM HOLDER</button>
+                                <button id="CMarena" class="menuchoose" onclick="showRankBy(3)">CM ARENA</button>
+                                <button id="MMVrealtime" class="menuchoose" onclick="showRankBy(4)">MMV REALTIME</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <div id="menuRank2" class="dropdown-boxMenu">
+                            <div class="dropdown-contentRank">
+                                <button id="CMholder1" class="menuchoose" onclick="rankPage(1)">GLOBAL</button>
+                                <button id="CMholder2" class="menuchoose" onclick="rankPage(2)">COMPETITION</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <div id="menuRank3" class="dropdown-boxMenu">
+                            <div class="dropdown-contentRank">
+                                <button id ="CMarena1" class="menuchoose" onclick="rankPage(3)">TOP CM POWER</button>
+                                <button id ="CMarena2" class="menuchoose" onclick="rankPage(4)">KINGS OF COMMU</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <div id="menuRank4" class="dropdown-boxMenu">
+                            <div class="dropdown-contentRank">
+                                <button id ="MMVrealtime1" class="menuchoose" onclick="rankPage(6)">TOP40 TOMATO</button>
+                                <button id ="MMVrealtime2" class="menuchoose" onclick="rankPage(7)">TOP40 CORN</button>
+                                <button id ="MMVrealtime3" class="menuchoose" onclick="rankPage(8)">TOP40 CABBAGE</button>
+                                <button id ="MMVrealtime4" class="menuchoose" onclick="rankPage(9)">TOP40 CARROT</button>
+                            </div>
+                        </div>
+                    </div>  
+                </div>    
+                <div id="menuright" class="menu">
+                    <div class="dropdown">
+                        <button id="txnoti" class="navbutton" onclick="showNoti(0)">ACTIVE</button>
+                        <div id="notibox" class="dropdown-box">
+                            <div id="noti-content" class="dropdown-content"></div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button id="hxnoti" class="navbutton" onclick="showNoti(1)">HISTORY</button>
+                        <div id="historybox" class="dropdown-box">
+                            <div id="history-content" class="dropdown-content"></div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button id="conbuttonNav" class="login" onclick="showconmodal()">CONNECT WALLET</button>
+                        <div id="menuUser" class="dropdown-boxMenu">
+                            <div class='dropdown-contentUser'>
+                                <button id="tokentransfer" class="menuchoose" onclick="tokentransfer()">TOKEN TRANSFER</button>
+                                <button id="wrapkub" class="menuchoose" onclick="wrapKUB()">WRAP KUB TO KKUB</button>
+                                <button id="changeprofilepic" class="menuchoose" onclick="changeprofilepic()">CHANGE NFT PROFILE</button>
+                                <button id="logout" class="menuchoose" onclick="logout()">DISCONNECT WALLET</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="navhead">
+                <div class="innavhead">
+                    <div class="padding">
+                        <span id="showcompletedeal">0</span>
+                        <span id="titlenavhead">TOTAL SUCCESS DEALS</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <main>
+            <div class="container">
+                <div class="peerstatus">
+                    <span class="title2">YOUR STATUS</span>
+                    <div id="loginarg" class="userdiv">
+                        <button id="conbutton" class="login" onclick="showconmodal()">CONNECT WALLET</button>
+                    </div>
+                    <div id="conmodal" class="modal">
+                        <div id="modalcenterCon" class="centermodal">
+                            <div class="wrapper">
+                                <div class="modal-chooser">
+                                    <button id="metamask" class="connect" onclick="walletconnect()">
+                                        <img class="walletimg" src="./logo/metamask-fox.svg" height="100" width="100" alt="metamask">
+                                        <br>
+                                        <span class="inchooser">Metamask</span>
+                                    </button>
+                                    <button id="bitkubnext" class="connect">
+                                        <img class="walletimg" src="https://www.bitkubchain.com/_next/image?url=%2Fimages%2Flogos%2Fbitkub-next-round-logo.png&w=256&q=100" height="100" width="100" alt="bitkubnext" />
+                                        <br>
+                                        <span class="inchooser">Bitkub Next</span>
+                                        <span id="coming" class="inchooser">COMING SOON</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                    <div id="usermodal" class="modal">
+                        <div id="modalcenterUser" class="centermodal">
+                            <div class="wrapper">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main">
+                    <span class="title">P2P TRADE</span>
+                    <span class="caption">SECURED BY THE SMART CONTRACT</span>
+                    <div id="tradearg"></div>
+                    <div id="showfeebox">
+                        <span class="inshowfeebox">Contract Fee (Each Side) :</span>
+                        <span id="platformfee" class="inshowfeebox"></span>
+                    </div>
+                    <div id="modalchooser1" class="modal">
+                        <div id="modalcenter1" class="centermodal">
+                            <div class="wrapper">
+                                <div id="chooser1content" class="modal-chooser"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalchooser2" class="modal">
+                        <div id="modalcenter2" class="centermodal">
+                            <div class="wrapper">
+                                <div id="chooser2content" class="modal-chooser"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalchooser3" class="modal">
+                        <div id="modalcenter3" class="centermodal">
+                            <div class="wrapper">
+                                <div id="chooser3content" class="modal-chooser Nftmode">
+                                    <div id="chooser3contain" class="nftcontainer"></div>
+                                    <div id="feetokenmode" class="menudownmodal"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalchooserNFT" class="modal">
+                        <div id="modalcenterNFT" class="centermodal">
+                            <div class="wrapper">
+                                <div id="chooserNFTcontent" class="modal-chooser Nftmode">
+                                    <div id="chooserNFTcontain" class="nftcontainer"></div>
+                                    <div id="selectNFT" class="menudownmodal"></div>
+                                </div>
+                            </div>    
+                        </div>    
+                    </div>
+                    <div id="loadingmodal" class="modal">
+                        <div class='screenloader'></div>
+                    </div>
+                </div>
+                <div id="yourpeerstatus" class="peerstatus">
+                    <span class="title2">DEALER STATUS</span>
+                    <div id="dealerarg" class="userdiv"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div id="logodown" class="infooter invert">
+                <img src="./logo/p2pContract.png" height="80" alt="p2pcontractlogo" />
+            </div>
+            <div id="infofooter" class="infooter">
+                <a id="registered" class="textfooter" href="https://www.bitkubchain.com/ecosystem/3e95c0d6-3a51-453d-bdc7-575c4ec2e5c7" target="_blank">
+                    v.0.0.3[ALPHA] REGISTERED ON BITKUB CHAIN
+                </a>
+                <a id="doc" class="textfooter" href="https://p2pcontract.gitbook.io/whitepaper/" target="_blank">
+                    WHITEPAPER
+                </a>
+            </div>
+            <div id="logofooter" class="infooter">
+                <a class="social invert" href="https://www.facebook.com/p2pContract" target="_blank">
+                    <img src="./logo/Facebook.png" width="25" height="25" alt="facebookcontact" />
+                </a>
+                <a class="social invert" href="https://github.com/demontocoshi/p2pContract" target="_blank">
+                    <img src="./logo/GitHub.png" width="25" height="25" alt="githubcontact" />
+                </a>
+            </div>
+        </footer>
+    </body>
+</html>

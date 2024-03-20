@@ -1,0 +1,1694 @@
+@font-face {
+    font-family: "Inter";
+    src: url("./font/Inter-Regular.ttf");
+}
+@font-face {
+    font-family: "InterBold";
+    src: url("./font/Inter-Bold.ttf");
+}
+@font-face {
+    font-family: "HussarBold";
+    src: url("./font/HussarBoldWebEdition.otf");
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 100%;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(20, 16, 34, 0.9);
+    border-radius: 10px;
+}
+body {
+    margin: 0;
+    background: linear-gradient(rgb(32, 39, 56) 0%, rgb(7, 8, 22) 100%);
+    background-color: rgb(7, 8, 22);
+}
+nav {
+    float: left;
+    width: 100%;
+    height: 280px;
+}
+#navhead {
+    width: 100%;
+    height: 240px;
+    display: flex;
+    flex-direction: row;
+}
+.innavhead {
+    width: 100%;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+.invert {
+    filter: grayscale(1) invert(1);
+    margin-top: 20px;
+}
+.padding {
+    padding: 15px 30px;
+    border-radius: 25px;
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: initial;
+    border: 1px solid rgb(64, 74, 103);
+}
+span {
+    font-family: "Inter";
+    letter-spacing: 2px;
+    color: #F6F8FE;
+}
+#titlenavhead {
+    font-family: "HussarBold";
+    letter-spacing: 3px;
+    font-size: 10px;
+    margin-top: 15px;
+    color: rgb(152, 161, 192);
+}
+#showcompletedeal {
+    font-family: "HussarBold";
+    font-size: 42px;
+    letter-spacing: 7px;
+    width: 100%;
+    text-shadow: rgb(0 0 0 / 25%) 0px 4px 4px;
+}
+.eventbox {
+    background: -webkit-linear-gradient(45deg, hsla(324, 91%, 46%, 1) 0%, hsla(18, 100%, 49%, 1) 100%);
+    box-shadow: 0 1px 10px #f73515;
+    padding: 30px 40px 0 40px;
+    width: 400px;
+    height: 100px;
+    font-family: "HussarBold";
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #F6F8FE;
+    margin-left: 50px;
+    text-align: initial;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.eventtitle {
+    font-size: 24px;
+    color: yellow;
+    letter-spacing: 5px;
+    text-shadow: rgb(0 0 0 / 25%) 0px 4px 4px;
+}
+.eventjoin {
+    padding: 8px 10px 10px 10px;
+    margin: 15px 0;
+    width: 150px;
+    height: 30px;
+    font-family: "HussarBold";
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #F6F8FE;
+    border: 1px solid #F6F8FE;
+}
+
+
+#realnav {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgb(20, 16, 34, 0.9);
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    position: fixed;
+    top: 0;
+    z-index: 3;
+}
+.menu {
+    margin-left: auto;
+    display: flex;
+}
+button {
+    font-family: "InterBold";
+    height: fit-content;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+}
+button:hover {
+    opacity: 0.6
+}
+#logo {
+    font-family: "HussarBold";
+    letter-spacing: 3px;
+    font-size: 18px;
+    color: #F6F8FE;
+    padding: 15px 20px 15px 40px;
+}
+#txnoti {
+    visibility: hidden;
+}
+#hxnoti {
+    visibility: hidden;
+}
+.navbutton {
+    letter-spacing: 2px;
+    font-size: 14px;
+    height: 100%;
+    color: #F6F8FE;
+    padding: 15px 20px;
+    text-decoration: none;
+}
+.navbutton:hover {
+    opacity: 0.6
+}
+.badge {
+    font-size: 16px;
+    letter-spacing: 0;
+    background: red;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 50px;
+}
+.dropdown {
+    position: relative;
+}
+.dropdown-box {
+    display: none;
+    position: absolute;
+    top: 46px;
+    left: -120px;
+    background: rgb(20, 16, 34);
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+    min-width: 400px;
+    height: 660px;
+    border-radius: 5px;
+    z-index: 3;
+}
+.dropdown-box button {
+    width: 95%;
+    max-width: 375.25px;
+    height: 115px;
+    padding: 10px 0;
+    border-radius: 5px;
+    color: #F6F8FE;
+}
+.dropdown-box button:hover {
+    opacity: 1;
+}
+.dropdown-content {
+    overflow: scroll;
+    height: 85%;
+}
+input {
+    height: 14px;
+    width: 70%;
+    padding: 15px 40px;
+    margin: 0;
+    border: 1px solid #27262c;
+    border-radius: 10px;
+    background: rgb(19, 26, 42);
+    text-align: left;
+    font-family: "Inter";
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #F6F8FE;
+}
+input:hover { border: 1px solid #F6F8FE; }
+input:focus {
+    border: 1px solid yellow;
+    outline: none;
+}
+::placeholder { color: hsla(0,0%,100%,.6); }
+.errorinput { border: 1px solid orangered; }
+.search { margin: 0 20px 10px 20px; }
+.filterdeal {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    width: 200px;
+}
+#switchfilter {
+    font-size: 8px;
+    letter-spacing: 3px;
+    width: 45%;
+    height: 20px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px 0;
+}
+#switchfilter:hover {
+    opacity: 1;
+}
+.filterselect { background: rgb(41, 50, 73); }
+#loadmoreAc {
+    color: gray;
+    height: 10px;
+    padding: 0;
+    margin: 15px 15px 30px 15px;
+}
+#loadmoreAc:hover {
+    background: transparent;
+    opacity: 0.6;
+}
+#loadmoreHx {
+    color: gray;
+    height: 10px;
+    padding: 0;
+    margin: 15px 15px 30px 15px;
+}
+#loadmoreHx:hover {
+    background: transparent;
+    opacity: 0.6;
+}
+#nomore {
+    color: gray;
+    height: 10px;
+    padding: 0;
+    margin: 15px 15px 30px 15px;
+    cursor: default;
+}
+#nomore:hover {
+    background: transparent;
+}
+
+.notipeerprofile {
+    height: 100px;
+    width: 100px;
+}
+.nftmini {
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    left: 30px;
+    display: flex;
+    justify-content: center;
+ }
+ .dealbadge {
+    font-family: "HussarBold";
+    font-size: 10px;
+    letter-spacing: 2px;
+    position: absolute;
+    right: 230px;
+    width: 85px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background: rgb(19, 26, 42);
+ }
+ .dealbadgeKns {
+    font-family: "HussarBold";
+    font-size: 5px;
+    letter-spacing: 2px;
+    position: absolute;
+    right: 230px;
+    width: 85px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background: rgb(19, 26, 42);
+ }
+ .dealstat {
+    font-family: "HussarBold";
+    letter-spacing: 2px;
+    text-align: center;
+    font-size: 14px;
+    color: yellow;
+    line-height: 70px;
+ }
+ .titlebox {
+    font-family: "Inter";
+    letter-spacing: 2px;
+    text-indent: 25px;
+    font-size: 16px;
+    color: #F6F8FE;
+    line-height: 40px;
+    cursor: pointer;
+ }
+ .notibutt {
+    font-family: "Inter";
+    font-size: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+ }
+.notibutt:hover { background: rgb(41, 50, 73); }
+.dealmsg {
+    font-family: "Inter";
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-align: initial;
+    position: absolute;
+    width: 200px;
+    right: 0;
+}
+main {
+    float: left;
+    width: 100%;
+    height: 1000px;
+    display: flex;
+    justify-content: space-around;
+    color: #F6F8FE;
+}
+.container {
+    width: 100%;
+    max-width: 1000px;
+    height: 695px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.peerstatus {
+    text-align: center;
+    background: rgb(14, 17, 26);
+    border-radius: 10px;
+    width: 300px;
+    height: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+ .title2 {
+    height: 22.5px;
+    width: 100%;
+    padding: 20px 0 10px 0;
+    margin: 0 0 0 90px;
+    text-align: left;
+    font-family: "HussarBold";
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #F6F8FE;
+}
+.userdiv {
+    padding: 15px 0;
+    width: 100%;
+    height: 263px;
+    position: relative;
+}
+.login {
+    letter-spacing: 2px;
+    font-family: "HussarBold";
+    color: #F6F8FE;
+    font-size: 12px;
+    width: 220px;
+    padding: 15px 30px 13px 30px;
+    background: #2F8AF5;
+}
+#conbuttonNav {
+    padding: 10px 25px 8px 25px;
+    margin: 10px 16px;
+    font-size: 10px;
+}
+.connect {
+    font-family: "Inter";
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: #F6F8FE;
+    width: 200px;
+    height: 200px;
+    padding: 10px 5px;
+    position: relative;
+    display: inline-block;
+}
+#bitkubnext { cursor: not-allowed; }
+#coming {
+    position: absolute;
+    top: 167px;
+    right: 38px;
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 1px solid white;
+    height: auto;
+    width: auto;
+    font-size: 10px;
+    letter-spacing: 1.75px;
+}
+.mainprofile {
+    border-radius: 50px;
+    margin: 0 0 10px 75px;
+    height: 144px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.miniprofile {
+    border-radius: 50px;
+    height: 90px;
+    width: 90px;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+}
+.waitdealer {
+    font-family: "Inter";
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 320px;
+    height: 320px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.addr {
+    font-family: "HussarBold";
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 5px 30px;
+    margin-bottom: 5px;
+    width: 220px;
+    background: rgb(19, 26, 42);
+    border: 1px solid rgb(27, 34, 54);
+    color: #F6F8FE;
+}
+#youraddrNav { margin: 10px 16px; }
+.Senderdeal { color: #FC7500; }
+.Receiverdeal { color: #1598F2; }
+#status-content {
+    font-family: "Inter";
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: hsla(0,0%,100%,.6);
+    padding: 5px 0;
+}
+.dealsender {
+    background: #FC7500;
+    color: black;
+    padding: 1px 5px;
+    border-radius: 5px;
+}
+.dealgetter {
+    background: #1598F2;
+    color: black;
+    padding: 1px 5px;
+    border-radius: 5px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 4;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.screenloader {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    border: 16px solid #27262c;
+    border-top: 16px solid #bdfe00;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.centermodal {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.wrapper {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-self: center;
+}
+.modal-content {
+    padding: 20px;
+    background: #141613;
+    border-radius: 25px;
+    height: 500px;
+    width: 730px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+    align-self: center;
+}
+.modal-chooser {
+    padding: 20px;
+    background: #141613;
+    border-radius: 10px;
+    height: 500px;
+    width: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+    align-self: center;
+}
+#showattrnft {
+    position: absolute;
+    top: -50px;
+    right: -350px;
+    width: 300px;
+    background: black;
+    border: 1px solid;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+#attrnftName {
+    font-size: 20px;
+    font-family: 'HussarBold';
+    text-indent: 10px;
+    margin-top: 50px;
+}
+#attrnftColl { margin-top: 20px; }
+.containnftattr {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.tokenselect {
+    font-family: "Inter";
+    letter-spacing: 1px;
+    font-size: 12px;
+    color: #F6F8FE;
+    width: 100px;
+    height: 99px;
+    position: relative;
+    display: inline-block;
+}
+.Token:hover {
+    opacity: 1;
+}
+.tokenselecttext {
+    padding: 5px 0;
+    visibility: hidden;
+    width: 120px;
+    background: rgba(8, 6, 11, 0.6);
+    color: #F6F8FE;
+    text-align: center;
+    border-radius: 5px;
+    position: absolute;
+    bottom: -5px;
+    left: -10px;
+    z-index: 1;
+}
+.tokenselect:hover .tokenselecttext {
+    visibility: visible;
+}
+#token2004add { 
+    margin-top: 80px;
+    height: 120px;
+}
+.menutopmodal {
+    width: 640px;
+    border-radius: 10px;
+    background: rgba(8, 6, 11, 0.6);
+    align-self: center;
+}
+#switchpageToken {
+    font-size: 12px;
+    color: #F6F8FE;
+    background: transparent;
+    width: 45%;
+    margin: 5px;
+    border: none;
+}
+#switchpageTokenActive {
+    background: #1890ff;
+    font-size: 12px;
+    width: 45%;
+    border-radius: 10px;
+    margin: 5px;
+}
+.pagedownmodal {
+    width: 200px;
+    height: 35px;
+    background: rgba(8, 6, 11, 0.6);
+    border-radius: 10px;
+    align-self: center;
+}
+#switchpagedown {
+    font-size: 12px;
+    color: #F6F8FE;
+    background: transparent;
+    width: 25%;
+    padding: 5px 10px;
+    border: none;
+}
+#switchpagedown:hover { color: yellow; }
+#switchpagedownActive {
+    background: #1890ff;
+    font-size: 12px;
+    text-indent: 5px;
+    width: 25%;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.nftcontainer {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0 5%;
+    overflow: scroll;
+}
+.Nftmode {
+    flex-direction: row;
+    align-items: flex-start;
+}
+.nftselect {
+    position: relative;
+    border-radius: 5px;
+    padding: 4px 5px 1px 5px;
+}
+.nftselect:hover {
+    background: rgb(41, 50, 73);
+    opacity: 1;
+}
+.nftselected {
+    position: relative;
+    margin: 0 2.5px;
+    border-radius: 25px;
+    width: 162px;
+    height: 155.5px;
+    opacity: 0.6;
+}
+#nftused {
+    color: lightyellow;
+    position: absolute;
+    margin: 0 2.5px;
+    left: 33px;
+    top: 20px;
+}
+.nftinfo {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-family: "Inter";
+    font-size: 26px;
+    color: #F6F8FE;
+    background: slategray;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+}
+.nftinfo:hover { background: black; }
+.active { opacity: 1; }
+.active2 {
+    background: rgb(41, 50, 73);
+    opacity: 0.8;
+    height: 120px;
+}
+.notactive { opacity: 0.1; }
+.nftstat {
+    letter-spacing: 3px;
+    font-size: 20px;
+    color: yellow;
+    line-height: 70px;
+    width: 100%;
+ }
+.menudownmodal {
+    position: absolute;
+    bottom: 25px;
+    width: 70%;
+}
+#feetokenmode {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+.main {
+    text-align: center;
+    width: 350px;
+    height: 610px;
+    border-radius: 10px;
+    background: rgb(14, 17, 26);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: space-between;
+    position: relative;
+}
+.title {
+    height: 24.5px;
+    width: 100%;
+    margin: 0 0 0 50px;
+    padding: 20px 0 5px 0;
+    text-align: left;
+    font-family: "HussarBold";
+    font-size: 18px;
+    letter-spacing: 3px;
+}
+.caption {
+    height: 9px;
+    width: 100%;
+    margin: 0 0 0 50px;
+    padding-bottom: 10px;
+    text-align: left;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: hsla(0,0%,100%,.6);
+}
+#showfeebox {
+    background: rgb(19, 26, 42);
+    height: 50px;
+    width: 350px;
+    position: absolute;
+    bottom: -60px;
+    border-radius: 15px;
+    border: 1px solid rgb(27, 34, 54);
+    line-height: 50px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+}
+.inshowfeebox { color: rgb(152, 161, 192); }
+#tradearg {
+    font-family: "Inter";
+    color: #F6F8FE;
+    width: 95%;
+    height: 410px;
+    position: relative;
+}
+.tokenarg {
+    padding: 0 0 10px 0;
+    margin: 5px;
+    height: 40px;
+    display: flex;
+}
+.headarg {
+    margin: 10px;
+    border: 1px solid rgb(64, 74, 103);
+    border-radius: 18px;
+}
+#addrCheck {
+    margin: 29px 10px 10px 10px;
+    padding: 0;
+}
+.addrArgSend {
+    padding: 10px 0 0 0;
+    height: 40px;
+    display: flex;
+}
+.maxbutton {
+    height: 40px;
+    width: 10%;
+    padding: 0 20px;
+    margin: 0;
+    border: 1px solid #141613;
+    border-radius: 50%;
+    position: absolute;
+    top: 75px;
+    right: 10px;
+    text-indent: -12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: hsla(0,0%,100%,.6);
+}
+.maxbutton:hover { border: 1px solid #F6F8FE; }
+#maxbuttonSend {
+    padding: 0 5px;
+    width: 40px;
+    top: 135px;
+    right: 90px;
+    background: rgb(14, 17, 26);
+    text-indent: 2px;
+}
+.feetokenbutton {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #2F8AF5;
+    background: rgba(47, 138, 245, .16);
+    border-radius: 8px;
+    padding: 0;
+    width: 33%;
+    height: 20px;
+    position: absolute;
+    top: 218px;
+    right: 10px;
+}
+.feetokenbutton2 {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #2F8AF5;
+    background: rgba(47, 138, 245, .16);
+    padding: 0;
+    width: 33%;
+    height: 15px;
+    position: absolute;
+    top: 199px;
+    right: 10px;
+}
+.lockfeebutton {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #F6F8FE;
+    background: #27262c;
+    padding: 0;
+    width: 33%;
+    height: 30px;
+    position: absolute;
+    top: 215px;
+    right: 10px;
+}
+.lockfeebutton1 {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #F6F8FE;
+    background: #27262c;
+    padding: 0 5px;
+    width: 33%;
+    height: 30px;
+    position: absolute;
+    top: 250px;
+    right: 10px;
+}
+
+.beforeTradeButt { margin-bottom: 30px; }
+.chooser {
+    font-family: "HussarBold";
+    padding: 5px 0px;
+    margin: 0 0 0 5px;
+    display: inline-flex;
+    z-index: 1;
+}
+.inchooser {
+    color: #F6F8FE;
+    font-size: 12px;
+    padding: 0 5px;
+    height: 40px;
+    line-height: 30px;
+    letter-spacing: 2px;
+}
+.inchooserName {
+    color: #F6F8FE;
+    font-family: "HussarBold";
+    font-size: 12px;
+    padding: 0 5px;
+    height: 40px;
+    line-height: 30px;
+    letter-spacing: 2px;
+}
+#offernftname { margin: 0 10px; }
+.tokenargnft {
+    height: 85px;
+    padding: 8px 20px;
+    margin: 5px;
+    border-radius: 30px;
+    background: #27262c;
+    display: flex;
+}
+#tokenarg1nft2 { margin: -15px 5px 5px 5px; }
+.checkaddr {
+    font-size: 11.8px;
+    padding: 0 5px;
+    height: 40px;
+    line-height: 30px;
+    margin-left: 15px;
+}
+.arrowdown {
+    background: transparent;
+    border: solid grey;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    margin: 0 0 20px 0;
+}
+.arrowright {
+    background: transparent;
+    border: solid grey;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(315deg);
+    margin-top: 10px;
+    position: absolute;
+}
+#remainOffer {
+    position: absolute;
+    line-height: 80px;
+    text-indent: 50px;
+    font-family: "Inter";
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 0;
+    height: 0;
+}
+#remainSend {
+    height: 0;
+    padding: 0;
+    position: absolute;
+    line-height: 80px;
+    text-indent: 50px;
+    font-family: "Inter";
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #F6F8FE;
+}
+#remainGet {
+    font-family: "Inter";
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: hsla(0,0%,100%,.6);
+    border-radius: 5px;
+    position: absolute;
+    top: 130px;
+    left: 55px;
+}
+#remainGet2 {
+    font-family: "Inter";
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: hsla(0,0%,100%,.6);
+    border-radius: 5px;
+    position: absolute;
+    top: 265px;
+    left: 55px;
+}
+.mainbutton {
+    padding: 13px 40px 11px 40px;
+    margin: 5px 0;
+    width: 94%;
+    font-family: "HussarBold";
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: hsla(0,0%,100%,.6);
+    border: 1px solid rgb(64, 74, 103);
+}
+#selectoffernft {
+    margin: 22.5px 12.5px;
+    font-size: 10px;
+    color: black;
+    border: none;
+    background: yellow;
+}
+#changeoffernft {
+    font-size: 8px;
+    padding: 5px;
+    width: 150px;
+    position: absolute;
+    bottom: 250px;
+    right: 25px;
+    border: none;
+    background: black;
+}
+.tradebutton {
+    height: fit-content;
+    width: 94%;
+    padding: 13px 40px 11px 40px;
+    margin: 5px 0;
+    background: rgb(76, 130, 251);
+    font-family: "HussarBold";
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: #F6F8FE;
+}
+#sendtoken {
+    width: 65%;
+    margin-top: 20px;
+}
+#confirmwrap { width: 65%; }
+#approveprofilepic { width: 65%; }
+.tradebuttonLock {
+    background: rgb(41, 50, 73);
+    cursor: default;
+    padding: 15px 40px;
+    margin: 5px 0;
+    width: 200px;
+    height: 80px;
+    font-family: "HussarBold";
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgb(152, 161, 192);
+}
+.mainbuttonTo {
+    background: transparent;
+    font-size: 8px;
+    margin: 5px;
+    width: 94%;
+    letter-spacing: 3px;
+    opacity: 0.6;
+}
+.mainbuttonTo:hover { opacity: 1; }
+.tradebuttonTo {
+    background: rgb(41, 50, 73);
+    font-size: 8px;
+    margin: 5px;
+    width: 94%;
+    letter-spacing: 3px;
+    opacity: 1;
+}
+.tradebuttonTo:hover { opacity: 1; }
+#offer721butt { cursor: not-allowed; }
+
+.feetoken {
+    width: 200px;
+    height: 80px;
+    margin-bottom: 20px;
+    font-size: 10px;
+}
+#feetokentitle {
+    position: absolute;
+    top: 50px;
+    font-family: 'HussarBold';
+    font-size: 16px;
+    letter-spacing: 5px;
+    color: #F6F8FE;
+}
+.feetokentext {
+    position: absolute;
+    bottom: 135px;
+    font-family: 'Inter';
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: hsla(0,0%,100%,.6);
+}
+#feetokentext1 { left: 80px; }
+#feetokentext2 { right: 80px; }
+#feetokenbalance {
+    position: absolute;
+    bottom: 10px;
+    width: 80%;
+    font-family: 'Inter';
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgb(152, 161, 192);
+}
+#withdrawft { font-size: 10px; }
+#redeemfeenow { font-size: 10px; }
+
+#errormsg {
+    visibility: hidden;
+    margin-top: 10px;
+    font-family: "Inter";
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 2px;
+    height: 25px;
+    padding: 5px 0 0 10px;
+    background: rgb(41, 50, 73);
+    width: 90%;
+    border-left: 5px solid #E50914;
+    position: absolute;
+    left: 10px;
+}
+#errorsend {
+    visibility: hidden;
+    font-family: "Inter";
+    color: lightcoral;
+    font-size: 20px;
+    height: 30px;
+    padding: 5px 0 0 10px;
+    border-left: 5px solid orangered;
+    position: absolute;
+    left: 40px;
+    bottom: 60px;
+}
+.processmsg {
+    font-size: 20px;
+    letter-spacing: 5px;
+    color: hsla(0,0%,100%,.6);
+    padding: 5px 0 20px 0;
+}
+#processApprove { 
+    padding: 10px 0;
+    margin-bottom: 29px;
+}
+#offercompMsg { margin-bottom: 10px; }
+#copydeal {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #2F8AF5;
+    border-radius: 12px;
+    background: rgba(47, 138, 245, .16);
+    width: 60px;
+    height: 24px;
+    position: absolute;
+    top: 12px;
+    right: 0;
+}
+.copytext {
+    padding: 5px 0;
+    width: 85px;
+    background: black;
+    border-radius: 10px;
+    position: absolute;
+    z-index: 1;
+}
+#copynum {
+    right: 60px;
+    top: -15px;
+}
+#copyaddr {
+    right: 0;
+    bottom: 130px;
+}
+.hidden {
+    opacity: 0;
+    animation: fadeOut 2s;
+}
+@keyframes fadeOut {
+    0% { opacity: 1;}
+    99% { opacity: 0.01;}
+    100% { opacity: 0;}
+}
+.compmsg {
+    font-family: "HussarBold";
+    letter-spacing: 5px;
+    font-size: 20px;
+    padding-top: 15px;
+}
+.feespan {
+    letter-spacing: 2px;
+    font-size: 10px;
+    color: #6C86AD;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+    width: 91%;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+}
+#feeGet { margin-bottom: 20px; }
+#exploreblock {
+    margin: 15px 10px 10px 10px;
+    padding: 5px;
+    background: gray;
+    border-radius: 5px;
+}
+.exploreblockLink {
+    font-family: "Inter";
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #F6F8FE;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+.exploreblockLink:hover {
+    opacity: 0.6;
+}
+.showitem {
+    height: 150px;
+    width: 100%;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.showitem-content {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.getbadge {
+    font-family: "HussarBold";
+    font-size: 12px;
+    width: 110px;
+    position: absolute;
+    top: -10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background: rgb(19, 26, 42);
+}
+.tokenbadge {
+    font-size: 12px;
+    color: #F6F8FE;
+    background: rgba(8, 6, 11, 0.6);
+    padding: 5px 10px;
+    border-radius: 25px;
+    position: absolute;
+    bottom: 15px;
+    right: 5px;
+}
+.feediv {
+    visibility: hidden;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    color: hsla(0,0%,100%,.6);
+    padding: 5px;
+    border-radius: 5px;
+    width: 150px;
+    position: absolute;
+    bottom: -15px;
+    right: 0;
+    z-index: 1;
+}
+.showitem-content:hover .feediv {
+    visibility: visible;
+}
+
+
+.contrainer2 {
+    width: 80%;
+    min-width: 900px;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.containerRanking {
+    width: 820px;
+    height: 660px;
+    align-items: center;
+    margin-top: 5px;
+    overflow: scroll;
+}
+#top1to5 {
+    width: 800px;
+    margin-bottom: 10px;
+}
+.topMinorDiv {
+    width: 800px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.topminor {
+    background: rgb(35, 37, 48);
+    border-radius: 10px;
+    margin-right: 5px;
+}
+#top16to20 { margin-right: 0; }
+#top31to35 { margin-right: 0; }
+#top36to40 { width: 263.33px; }
+.rankby {
+    position: absolute;
+    top: 370px;
+    left: 50px;
+    padding: 0;
+    border-radius: 0;
+    font-family: 'HussarBold';
+    font-size: 14px;
+    color: rgb(152, 161, 192);
+}
+.dropdown-boxMenu {
+    display: none;
+    position: absolute;
+    background: rgb(20, 16, 34);
+    box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+    width: 250px;
+    height: fit-content;
+    border-radius: 5px;
+    z-index: 3;
+}
+.menuchoose {
+    position: relative;
+    width: 100%;
+    height: 55px;
+    padding: 20px;
+    font-family: 'HussarBold';
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #F6F8FE;
+    border-radius: 0;
+    text-align: initial;
+}
+.menuchoose:hover {
+    color: yellow;
+    opacity: 1;
+}
+.titleRank {
+    position: absolute;
+    top: 410px;
+    left: 50px;
+    font-family: 'HussarBold';
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 14px 22px 12px 22px;
+    background: linear-gradient(73.28deg, #495BFC 6.51%, #114188 88.45%);
+    border-radius: 25px;
+    border: 1px solid rgb(64, 74, 103);
+}
+.chooseRank {
+    position: absolute;
+    top: 480px;
+    left: 70px;
+    padding: 0;
+    font-family: 'HussarBold';
+    font-size: 16px;
+    color: #F6F8FE;
+    border-radius: 0;
+    opacity: 0.25;
+}
+.chooseRank2 {
+    position: absolute;
+    top: 480px;
+    left: 70px;
+    padding: 0;
+    font-family: 'HussarBold';
+    font-size: 16px;
+    color: #F6F8FE;
+    opacity: 0.25;
+}
+.chooseRank:hover { opacity: 1; }
+#chooseRankNotAdmin { top: 520px; }
+#chooseRankNotAdmin:hover { opacity: 1; }
+.textyourrank {
+    margin: 15px 5px;
+    font-family: 'HussarBold';
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+#textpower { left: 980px; }
+.rankregist {
+    position: absolute;
+    top: 38px;
+    right: 230px;
+    padding: 10px;
+    width: 40%;
+    font-family: 'HussarBold';
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 2px;
+    background: linear-gradient(to bottom, yellow, yellowgreen);
+}
+.rankbox {
+    position: relative;
+    height: 78px;
+    background: rgb(35, 37, 48);
+    border-radius: 10px;
+    margin: 0 0 3px 0;
+}
+.rankboxMinor {
+    position: relative;
+    height: 45px;
+}
+#yourrank {
+    background: rgb(20, 16, 34);
+    width: 800px;
+}
+.rankingorder {
+    position: absolute;
+    top: 35px;
+    left: 50px;
+    font-family: "HussarBold";
+    font-size: 12px;
+    color: #DDE3F9;
+    letter-spacing: 5px;
+}
+.rankingorderMinor {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    font-family: "HussarBold";
+    font-size: 8px;
+    color: #DDE3F9;
+    letter-spacing: 1px;
+}
+.miniprofileRank {
+    border-radius: 50px;
+    height: 60px;
+    width: 60px;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+    position: absolute;
+    left: 150px;
+    top: 10px;
+}
+.miniprofileRankMinor {
+    border-radius: 50px;
+    height: 35px;
+    width: 35px;
+    box-shadow: rgb(0 0 0 / 4%) 0px 0px 10px, rgb(46 44 53) 0px 0px 0px 1px;
+    position: absolute;
+    left: 35px;
+    top: 5px;
+}
+.rankprofile { border-radius: 50px; }
+.rankingname {
+    position: absolute;
+    top: 35px;
+    left: 290px;
+    font-family: "HussarBold";
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #C3BDFF;
+    padding: 0;
+    border-radius: 0;
+}
+.rankingnameMinor {
+    position: absolute;
+    top: 20px;
+    left: 100px;
+    font-family: "HussarBold";
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #C3BDFF;
+    padding: 0;
+    border-radius: 0;
+}
+.copyaddrRank {
+    position: absolute;
+    left: 135px;
+    top: 0;
+    width: 350px;
+    padding: 5px 0;
+    border-radius: 5px;
+    background: rgb(19, 26, 42);
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgb(152, 161, 192);
+    z-index: 1;
+}
+.copyaddrRankMinor {
+    position: absolute;
+    left: 35px;
+    top: -5px;
+    width: 200px;
+    padding: 5px 0;
+    border-radius: 5px;
+    background: rgb(19, 26, 42);
+    text-align: center;
+    font-size: 5px;
+    letter-spacing: 1px;
+    color: rgb(152, 161, 192);
+    z-index: 1;
+}
+.rankingvalue {
+    position: absolute;
+    top: 35px;
+    right: 30px;
+    font-family: "HussarBold";
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+.rankingvalueMinor {
+    position: absolute;
+    top: 20px;
+    right: 8px;
+    font-family: "HussarBold";
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+.level {
+    position: absolute;
+    top: 54px;
+    left: 180px;
+    padding: 3px 6px;
+    min-width: 30px;
+    max-width: 55px;
+    height: 12px;
+    font-family: "HussarBold";
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: rgb(152, 161, 192);
+    background: rgba(8, 6, 11, 0.6);
+    border: none;
+    border-radius: 5px;
+    z-index: 1;
+}
+.levelMinor {
+    position: absolute;
+    top: 28px;
+    left: 50px;
+    padding: 2px 4px;
+    min-width: 15px;
+    max-width: 30px;
+    height: 8px;
+    font-family: "HussarBold";
+    font-size: 6px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: rgb(152, 161, 192);
+    background: rgba(8, 6, 11, 0.6);
+    border: none;
+    border-radius: 5px;
+    z-index: 1;
+}
+.timestampnow {
+    font-family: 'HussarBold';
+    font-size: 8px;
+    letter-spacing: 2px;
+    width: 800px;
+    margin: 60px 0 10px 0;
+    text-align: end;
+    color: rgb(152, 161, 192);
+}
+
+
+footer {
+    float: left;
+    width: 100%;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+.infooter {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.textfooter {
+    font-family: "HussarBold";
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    color: #F6F8FE;
+    text-decoration: none;
+    opacity: 0.6;
+}
+.textfooter:hover { opacity: 1; }
+.social {
+    margin: 0 5px;
+}
+.social:hover {
+    opacity: 0.6
+}
+
+@media (max-width: 950px) {
+    #logo { font-size: 14px; }
+    .navbutton { 
+        font-size: 10px;
+        padding: 15px;
+    }
+    #conbuttonNav { visibility: hidden; }
+    #youraddrNav {
+        visibility: hidden;
+        position: absolute;
+    }
+    .infooter {
+        width: 100%;
+    }
+    .eventbox { 
+        visibility: hidden;
+        position: absolute;
+    }
+    .padding { margin-left: 0; }
+    main { height: 1700px; }
+    .container2 { width: 100%; }
+    .containeryour {
+        width: 100%;
+        overflow: scroll;
+    }
+    .container {
+        height: 1700px;
+        flex-direction: column;
+        align-items: center;
+    }
+    #showfeebox {
+        bottom: -45px;
+        height: 40px;
+        line-height: 40px;
+    }
+    #notibox {
+        left: -240px;
+    }
+    #historybox {
+        left: -290px;
+    }
+    .textfooter { font-size: 10px; }
+    .titleRank { top: 430px; }
+    .chooseRank {
+        top: 430px;
+        left: 310px;
+        font-size: 14px;
+    }
+    .chooseRank2 {
+        top: 430px;
+        left: 230px;
+        font-size: 14px;
+    }
+    #chooseRankNotAdmin {
+        top: 430px;
+        left: 380px;
+    }
+    .containerRanking {
+        height: 1220px;
+        width: 100%;
+    }
+    .rankbox { width: 680px; }
+    .timestampnow { margin-top: 150px; }
+}
+@media (min-width: 951px) and (max-width: 1400px) {
+    .navheadtext {
+        min-width: 240px;
+    }
+    footer {
+        height: 600px;
+        margin-left: 50px;
+    }
+    .infooter {
+        width: 100%;
+    }
+    main { 
+        height: 1100px;
+        margin-left: 50px;
+    }
+    .innavhead { margin-left: 100px; }
+    .rankby { left: 85px; }
+    .titleRank {
+        top: 392.5px;
+        left: 85px;
+    }
+    .chooseRank {
+        top: 410px;
+        left: 310px;
+    }
+    .chooseRank2 {
+        top: 410px;
+        left: 250px;
+    }
+    #chooseRankNotAdmin {
+        top: 410px;
+        left: 410px;
+    }
+    .timestampnow {
+        margin-top: 92px;
+        padding-bottom: 58px;
+    }
+}
