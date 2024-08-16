@@ -168,8 +168,8 @@ var CMadmin = [('0x8c4369814AA115Dd2634a9aec310f47d0b551533').toUpperCase(), ('0
 async function showoffdeal() {
     var soldcount = await p2pContract.methods.getSoldCount().call()
     $("#showcompletedeal").html(soldcount)
-    fee = await p2pContract.methods.getFee().call()
-    $("#platformfee").html((100/fee) + "%")
+    fee = await p2pContract.methods.getFee().call()    
+    $("#platformfee").html((100/Number(fee)) + "%")
     // indexedDB update
     var openRequest = indexedDB.open("HarvestStore", 2)
     openRequest.onupgradeneeded = function() {
