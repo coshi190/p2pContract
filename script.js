@@ -1032,8 +1032,7 @@ async function notiupdate() {
     }
     //** refresh your status **//
     var balanceGasWei = await web3.eth.getBalance(myaddr)
-    console.log(balanceGasWei)
-    var balanceGasEther = await web3.utils.fromWei(balanceGasWei)
+    var balanceGasEther = await web3.utils.fromWei(Number(balanceGasWei))
     $(".gas").remove()
     $("#loginarg").append("<div id='status-content' class='gas'>Gas Balance : " + Number(balanceGasEther).toFixed(9) + " KUB</div>")
     //** search for active deal **//
